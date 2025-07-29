@@ -10,6 +10,21 @@ Users query via a **frontend**, where an **AWS Lambda backend** embeds the quest
 
 ---
 
+## SITE STRUCTURE
+
+1. AnythingLLM (root repo)
+
+2. JAM Stack with Rust API - Team, Project, Localsite (earthscape.js for UN timelines and tabulator)
+
+3. SQL plus impacts IO matrix - repos: profile, exiobase, comparison, io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json
+
+4. RealityStream colab and repo, and cloud/run folder for Flask deployment
+
+5. NextJS - DataFlow, feed (React FeedPlayer), swiper
+
+6. python pipeline and output repos: data-pipeline, community-data, community-timelines, community-zipcodes, community-forecasting (first 5 rows of csv files)
+
+
 ## TODO
 
 - Chunk, Embed, Store in VectorDB - **NextJS repos** (`AnythingLLM`, `DataFlow`, `feed`, `swiper`)
