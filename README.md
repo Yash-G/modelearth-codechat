@@ -12,11 +12,11 @@ Users query via a **frontend**, where an **AWS Lambda backend** embeds the quest
 
 ## SITE STRUCTURE
 
-1. AnythingLLM (root repo)
+1. [earthscape](https://model.earth/earthscape/) (root repo) - A fork of AnythingLLM containing our submodules
 
-2. JAM Stack with Rust API - Team, Project, Localsite (earthscape.js for UN timelines and tabulator)
+2. JAM Stack with Rust API - team, project, localsite (with earthscape.js for UN timelines and tabulator)
 
-3. SQL plus impacts IO matrix - repos: profile, exiobase, comparison, io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json
+3. IO matrix repos: profile, exiobase, comparison, io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json
 
 4. RealityStream colab and repo, and cloud/run folder for Flask deployment
 
@@ -27,7 +27,7 @@ Users query via a **frontend**, where an **AWS Lambda backend** embeds the quest
 
 ## TODO
 
-- Chunk, Embed, Store in VectorDB - **NextJS repos** (`AnythingLLM`, `DataFlow`, `feed`, `swiper`)
+- Chunk, Embed, Store in VectorDB - **NextJS repos** (`earthscape`, `DataFlow`, `feed`, `swiper`)
 - Chunk, Embed, Store in VectorDB - **JAM Stack repos** (`Team`, `Project`, `Localsite`) - Lokesh
 - Chunk, Embed, Store in VectorDB - **RealityStream** colab and repo, and `cloud/run` folder
 - Chunk, Embed, Store in VectorDB - **SQL/IO repos** (`profile`, `exiobase`, `io`, `useeio.js`, `useeio-widgets`, `useeio-widgets-without-react`, `useeiopy`, `useeio_api`, `useeio`, `useeior`, `useeio-state`, `useeio-json`)
