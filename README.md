@@ -36,7 +36,7 @@ These local webroots have unique focuses to provide Claude with a common set of 
 
 2. **MaterialScience** - [profile](https://model.earth/profile), [exiobase](https://github.com/ModelEarth/exiobase/blob/main/tradeflow/CLAUDE.md), io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json, products, mario
 
-3. **DataFlow** - [data-pipeline](https://model.earth/data-pipeline/), community-data, community-timelines, community-zipcodes, community-forecasting
+3. **DataFlow** - [data-pipeline](https://model.earth/data-pipeline/), community-data, community-timelines, community-zipcodes, community-forecasting, dataflow
 
 
 ## TODO
