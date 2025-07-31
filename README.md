@@ -2,7 +2,7 @@
 
 The RAG pipeline processes files from a local repository (e.g., `ModelEarth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with **OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).
 
-Users query via a **frontend**, where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries **Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
+Users will query via a **frontend**, where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries **Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
 
 **GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
 
@@ -78,9 +78,10 @@ These repos have unique focuses to provide Claude with a common set of files.
 | `.css`, `.scss`, `.sass`, `.less`                | Stylesheets      | Tree-sitter (style rules)                         | CSS rule blocks (selectors + declarations)             |
 | Unknown extensions                               | Fallback         | Single string summary                             | Minimal metadata string (filename, path, ext)          |
 
-**Note** : 
+**Note:**
 - Update the ingestion pipeline to include appropriate chunking logic.
 - Update this table accordingly to reflect the new file type, category, strategy, and embedding logic.
+
 ---
 
 ## Front End
