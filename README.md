@@ -15,6 +15,7 @@ These repos are submodules in the [earthscape](https://model.earth/earthscape/) 
 | Name | Repository | Description |
 |------|------------|-------------|
 | earthscape | https://github.com/ModelEarth/earthscape | Root repo, fork of AnythingLLM |
+| home | https://github.com/modelearth/home | Everybody's Home Page |
 | localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
 | realitystream | https://github.com/modelearth/realitystream | ML Models |
 | cloud | https://github.com/modelearth/realitystream | Flask hosting of colabs |
@@ -84,7 +85,9 @@ These repos have unique focuses to provide Claude with a common set of files.
 
 ## Front End
 
-Use **Claude Code CLI** to generate a chat admin interface in the `codechat` repo with a prompt.
+Reuse pages in our [Earthscape](https://model.earth/earthscape/) fork of AnythingLLM for Chat Page starters
+
+Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
 
 ---
 
