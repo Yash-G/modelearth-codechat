@@ -41,12 +41,12 @@ These local webroots have unique focuses to provide Claude with a common set of 
 
 ## TODO
 
-- Chunk, Embed, Store in VectorDB - **Earthscape repos** (listed above and in [earthscape/submodules.jsx](https://github.com/ModelEarth/earthscape)) - Lokesh
+- Chunk, Embed, Store in VectorDB - **Modelearth repos** (listed above and in [modelearth/submodules.jsx](https://github.com/ModelEarth/modelearth)) - Lokesh
 - Chunk, Embed, Store in VectorDB - **Team JAM Stack with Rust API and Azure** (`team`) 
 - Chunk, Embed, Store in VectorDB - **RealityStream** colab and repo, and `cloud/run` folder
 - Chunk, Embed, Store in VectorDB - **IO repos** (`exiobase/tradeflow`, `profile`, `io`, `useeio.js`, `useeio-widgets`, `useeio-widgets-without-react`, `useeiopy`, `useeio_api`, `useeio`, `useeior`, `useeio-state`, `useeio-json`)
 - Chunk, Embed, Store in VectorDB - **Python Pipeline and output repos** (`data-pipeline`, `community-data`, `community-timelines`, `community-zipcodes`, `community-forecasting`)
-- Reuse pages in our [Earthscape](https://model.earth/earthscape/) fork of AnythingLLM for Chat Page starters
+- Reuse pages in our [Modelearth](https://model.earth/modelearth/) fork of AnythingLLM for Chat Page starters
 - Write AWS Lambda Backend (embed queries, fetch from Pinecone, and query Gemini)
 - Sync VectorDB with PRs (GitHub Actions on PR merges)
 
@@ -87,7 +87,7 @@ These local webroots have unique focuses to provide Claude with a common set of 
 
 ## Front End
 
-Reuse pages in our [Earthscape](https://model.earth/earthscape/) fork of AnythingLLM for Chat Page starters
+Reuse pages in our [Modelearth](https://model.earth/modelearth/) fork of AnythingLLM for Chat Page starters
 
 Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
 
