@@ -23,7 +23,7 @@ These repos are submodules in the [earthscape](https://model.earth/earthscape/) 
 | swiper | https://github.com/modelearth/swiper | UI swiper components |
 | comparison | https://github.com/modelearth/comparison | Trade Flow tools |
 | codechat | https://github.com/ModelEarth/codechat | Code chat interface |
-| project | https://github.com/ModelEarth/project | Overview and TODOs |
+| projects | https://github.com/ModelEarth/projects | Overview and TODOs |
 
 <br>
 
