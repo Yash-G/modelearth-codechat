@@ -1,4 +1,6 @@
-# CodeChat - RAG Pipeline Documentation
+# CodeChat
+
+## RAG Pipeline Documentation
 
 The RAG pipeline processes files from a local repository (e.g., `ModelEarth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with **OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).
 
@@ -6,15 +8,14 @@ Users will query via a **frontend**, where an **AWS Lambda backend** embeds the 
 
 **GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
 
----
 
-## EarthScape Site (MAIN RAG)
+## ModelEarth (MAIN RAG)
 
-These repos are submodules in the [earthscape](https://model.earth/earthscape/) webroot
+These repos are submodules in the [modelearth](https://model.earth/modelearth/) webroot
 
 | Name | Repository | Description |
 |------|------------|-------------|
-| earthscape | https://github.com/ModelEarth/earthscape | Root repo, fork of AnythingLLM |
+| modelearth | https://github.com/ModelEarth/modelearth | Root repo, fork of AnythingLLM |
 | home | https://github.com/modelearth/home | Everybody's Home Page |
 | localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
 | realitystream | https://github.com/modelearth/realitystream | ML Models |
@@ -27,15 +28,15 @@ These repos are submodules in the [earthscape](https://model.earth/earthscape/) 
 
 <br>
 
-## Additional Repos
+## Additional webroot repo clusters
 
-These repos have unique focuses to provide Claude with a common set of files.
+These local webroots have unique focuses to provide Claude with a common set of files.
 
-1. Team - JAM Stack with Rust API with Azure PostgreSQL - [team repo](https://model.earth/team/)
+1. **ProjectTools** - [webroot](https://github.com/modelearth/webroot) JAM Stack with Rust API with Azure PostgreSQL - [team repo](https://model.earth/team/)
 
-2. Profile - [IO matrix repos](https://model.earth/io): [profile](https://model.earth/profile), [exiobase](https://github.com/ModelEarth/exiobase/blob/main/tradeflow/CLAUDE.md), io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json
+2. **MaterialScience** - [profile](https://model.earth/profile), [exiobase](https://github.com/ModelEarth/exiobase/blob/main/tradeflow/CLAUDE.md), io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json, products, mario
 
-3. Data-Pipeline (dataflow) - [python data-pipeline](https://model.earth/data-pipeline/), community-data, community-timelines, community-zipcodes, community-forecasting (first 5 rows of csv files)
+3. **DataFlow** - [data-pipeline](https://model.earth/data-pipeline/), community-data, community-timelines, community-zipcodes, community-forecasting
 
 
 ## TODO
