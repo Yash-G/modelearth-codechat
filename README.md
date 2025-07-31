@@ -1,6 +1,4 @@
-# codechat
-
-# RAG Pipeline Documentation
+# CodeChat - RAG Pipeline Documentation
 
 The RAG pipeline processes files from a local repository (e.g., `ModelEarth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with **OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).
 
@@ -10,29 +8,43 @@ Users query via a **frontend**, where an **AWS Lambda backend** embeds the quest
 
 ---
 
-## SITE STRUCTURE
+## EarthScape Site (MAIN RAG)
 
-1. [earthscape](https://model.earth/earthscape/) (root repo) - A fork of AnythingLLM containing our submodules
+These repos are submodules in the [earthscape](https://model.earth/earthscape/) webroot
 
-2. JAM Stack with Rust API - team, project, localsite (with earthscape.js for UN timelines and tabulator)
+| Name | Repository | Description |
+|------|------------|-------------|
+| earthscape | https://github.com/ModelEarth/earthscape | Root repo, fork of AnythingLLM |
+| localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
+| realitystream | https://github.com/modelearth/realitystream | ML Models |
+| cloud | https://github.com/modelearth/realitystream | Flask hosting of colabs |
+| feed | https://github.com/modelearth/feed | FeedPlayer video/gallery |
+| swiper | https://github.com/modelearth/swiper | UI swiper components |
+| comparison | https://github.com/modelearth/comparison | Trade Flow tools |
+| codechat | https://github.com/ModelEarth/codechat | Code chat interface |
+| project | https://github.com/ModelEarth/project | Overview and TODOs |
 
-3. IO matrix repos: profile, exiobase, comparison, io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json
+<br>
 
-4. RealityStream colab and repo, and cloud/run folder for Flask deployment
+## Additional Repos
 
-5. NextJS - DataFlow, feed (React FeedPlayer), swiper
+These repos have unique focuses to provide Claude with a common set of files.
 
-6. python pipeline and output repos: data-pipeline, community-data, community-timelines, community-zipcodes, community-forecasting (first 5 rows of csv files)
+1. Team - JAM Stack with Rust API with Azure PostgreSQL - [team repo](https://model.earth/team/)
+
+2. Profile - [IO matrix repos](https://model.earth/io): [profile](https://model.earth/profile), [exiobase](https://github.com/ModelEarth/exiobase/blob/main/tradeflow/CLAUDE.md), io, useeio.js, useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json
+
+3. Data-Pipeline (dataflow) - [python data-pipeline](https://model.earth/data-pipeline/), community-data, community-timelines, community-zipcodes, community-forecasting (first 5 rows of csv files)
 
 
 ## TODO
 
-- Chunk, Embed, Store in VectorDB - **NextJS repos** (`earthscape`, `DataFlow`, `feed`, `swiper`)
-- Chunk, Embed, Store in VectorDB - **JAM Stack repos** (`Team`, `Project`, `Localsite`) - Lokesh
+- Chunk, Embed, Store in VectorDB - **Earthscape repos** (listed above and in [earthscape/submodules.jsx](https://github.com/ModelEarth/earthscape)) - Lokesh
+- Chunk, Embed, Store in VectorDB - **Team JAM Stack with Rust API and Azure** (`team`) 
 - Chunk, Embed, Store in VectorDB - **RealityStream** colab and repo, and `cloud/run` folder
-- Chunk, Embed, Store in VectorDB - **SQL/IO repos** (`profile`, `exiobase`, `io`, `useeio.js`, `useeio-widgets`, `useeio-widgets-without-react`, `useeiopy`, `useeio_api`, `useeio`, `useeior`, `useeio-state`, `useeio-json`)
-- Chunk, Embed, Store in VectorDB - **Python Pipeline Repos** (`data-pipeline`, `community-data`, `community-timelines`, `community-zipcodes`, `community-forecasting`, first 5 CSV rows)
-- Set Up Frontend Chat Page using CLI or Prepare a prompt
+- Chunk, Embed, Store in VectorDB - **IO repos** (`exiobase/tradeflow`, `profile`, `io`, `useeio.js`, `useeio-widgets`, `useeio-widgets-without-react`, `useeiopy`, `useeio_api`, `useeio`, `useeior`, `useeio-state`, `useeio-json`)
+- Chunk, Embed, Store in VectorDB - **Python Pipeline and output repos** (`data-pipeline`, `community-data`, `community-timelines`, `community-zipcodes`, `community-forecasting`)
+- Reuse pages in our [Earthscape](https://model.earth/earthscape/) fork of AnythingLLM for Chat Page starters
 - Write AWS Lambda Backend (embed queries, fetch from Pinecone, and query Gemini)
 - Sync VectorDB with PRs (GitHub Actions on PR merges)
 
