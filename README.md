@@ -34,7 +34,7 @@ These local webroots have unique focuses to provide Claude with a common set of 
 
 1. **ProjectTools** - [webroot](https://github.com/modelearth/webroot) JAM Stack with Rust API with Azure PostgreSQL - [team repo](https://model.earth/team/)
 
-2. **MaterialScience** - [MaterialScience webroot](https://github.com/modelearth/MaterialScience), [profile](https://model.earth/profile), [exiobase](https://github.com/ModelEarth/exiobase/blob/main/tradeflow/CLAUDE.md), [io](https://model.earth/io/), [useeio.js]](https://model.earth/useeio.js/footprint/), useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json, products, mario
+2. **MaterialScience** - [MaterialScience webroot](https://github.com/modelearth/MaterialScience), [products](https://model.earth/products/), [profile](https://model.earth/profile/), [exiobase](https://github.com/ModelEarth/exiobase/blob/main/tradeflow/CLAUDE.md), [io](https://model.earth/io/), [useeio.js](https://model.earth/useeio.js/footprint/), useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json, mario
 
 3. **DataFlow** - [data-pipeline](https://model.earth/data-pipeline/), community-data, community-timelines, community-zipcodes, community-forecasting, dataflow
 
