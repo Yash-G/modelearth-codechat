@@ -43,7 +43,6 @@ These local webroots have unique focuses to provide Claude with a common set of 
 
 - Chunk, Embed, Store in VectorDB - **Modelearth repos** (listed above and in [modelearth/submodules.jsx](https://github.com/ModelEarth/modelearth)) - Lokesh
 - Chunk, Embed, Store in VectorDB - **Team JAM Stack with Rust API and Azure** (`team`) 
-- Chunk, Embed, Store in VectorDB - **RealityStream** colab and repo, and `cloud/run` folder
 - Chunk, Embed, Store in VectorDB - **IO repos** (`exiobase/tradeflow`, `profile`, `io`, `useeio.js`, `useeio-widgets`, `useeio-widgets-without-react`, `useeiopy`, `useeio_api`, `useeio`, `useeior`, `useeio-state`, `useeio-json`)
 - Chunk, Embed, Store in VectorDB - **Python Pipeline and output repos** (`data-pipeline`, `community-data`, `community-timelines`, `community-zipcodes`, `community-forecasting`)
 - Reuse pages in our [Modelearth](https://model.earth/modelearth/) fork of AnythingLLM for Chat Page starters
