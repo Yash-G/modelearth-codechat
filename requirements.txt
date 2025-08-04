@@ -1,0 +1,13 @@
+# RAG Query Test Dependencies
+python-dotenv>=1.1.1
+pinecone>=7.3.0
+openai>=1.98.0
+google-generativeai>=0.8.5
+
+# Core dependencies (automatically installed with above)
+certifi>=2025.8.3
+typing-extensions>=4.14.1
+urllib3>=2.5.0
+requests>=2.32.4
+pydantic>=2.11.7
+anyio>=4.10.0
