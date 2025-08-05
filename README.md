@@ -15,21 +15,48 @@ Users will query via a **frontend**, where an **AWS Lambda backend** embeds the 
 Add your 3 keys to .env and run to test the RAG process (Mac version):
 Claude will install: python-dotenv pinecone-client openai google-generativeai
 
+Windows PC
+
+	python -m venv env
+	env\Scripts\activate.bat
+
+Mac/Linux
+
 	python3 -m venv env
 	source env/bin/activate
-	python3 rag_query_test.py
 
+Start
 
-## ModelEarth (MAIN RAG)
+	python rag_query_test.py
 
-These repos are submodules in the [modelearth](https://model.earth/modelearth/) webroot
+## PartnerTools webroot
+
+<a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
+
+This webroot is simple, with the intent that Claude will pull additional submodules based on coder choices.
 
 | Name | Repository | Description |
 |------|------------|-------------|
-| modelearth | https://github.com/ModelEarth/modelearth | Root repo, fork of AnythingLLM |
+| team | https://github.com/modelearth/team | [Team - Rust REST API for Azure](../team) |
+| localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
+| feed | https://github.com/modelearth/feed | FeedPlayer video/gallery |
+| swiper | https://github.com/modelearth/swiper | UI swiper components |
+| comparison | https://github.com/modelearth/comparison | Trade Flow tools |
+| products | https://github.com/ModelEarth/projects | Overview and TODOs |
+<br>
+
+## ModelEarth webroot (MAIN RAG)
+
+<a href="http://localhost:3001/" style="float:right">Runs on port 3001</a>
+
+These repos are submodules in the [modelearth](https://model.earth/modelearth/) webroot.
+This webroot is a fork of Anything LLM NextJS with submoduoles added.
+
+| Name | Repository | Description |
+|------|------------|-------------|
 | home | https://github.com/modelearth/home | Everybody's Home Page |
 | localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
-| realitystream | https://github.com/modelearth/realitystream | ML Models |
+| realitystream | https://github.com/modelearth/realitystream | [ML Models Colab](../realitystream/) |
 | cloud | https://github.com/modelearth/realitystream | Flask hosting of colabs |
 | feed | https://github.com/modelearth/feed | FeedPlayer video/gallery |
 | swiper | https://github.com/modelearth/swiper | UI swiper components |
