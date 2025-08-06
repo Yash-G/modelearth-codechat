@@ -29,6 +29,11 @@ Start
 
 	python rag_query_test.py
 
+Or start Claude
+
+	npx @anthropic-ai/claude-code
+
+
 ## PartnerTools webroot
 
 <a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
@@ -63,19 +68,50 @@ This webroot is a fork of Anything LLM NextJS with submoduoles added.
 | comparison | https://github.com/modelearth/comparison | Trade Flow tools |
 | codechat | https://github.com/ModelEarth/codechat | Code chat interface |
 | projects | https://github.com/ModelEarth/projects | Overview and TODOs |
+<br>
+
+## MaterialScience webroot
+
+<a href="http://localhost:8888/" style="float:right">Runs on port 8888</a>
+
+These repos focus on material science, environmental impact, and supply chain analysis tools.
+
+| Name | Repository | Description |
+|------|------------|-------------|
+| MaterialScience | https://github.com/modelearth/MaterialScience | MaterialScience webroot |
+| products | https://github.com/modelearth/products | Products frontend and python |
+| products-data | https://github.com/modelearth/products-data | Products data output |
+| profile | https://github.com/modelearth/profile | Profile frontend analysis |
+| exiobase | https://github.com/ModelEarth/exiobase | Trade flow output to .csv and SQL |
+| io | https://github.com/modelearth/io | Input-output analysis |
+| useeio.js | https://github.com/modelearth/useeio.js | JavaScript footprint tools |
+| useeio-widgets | https://github.com/USEPA/useeio-widgets | USEEIO React widgets |
+| useeio-widgets-without-react | https://github.com/modelearth/useeio-widgets-without-react | USEEIO widgets without React |
+| useeiopy | https://github.com/USEPA/useeiopy | Python USEEIO library |
+| useeio_api | https://github.com/USEPA/useeio_api | USEEIO REST API |
+| useeio | https://github.com/USEPA/useeio | Core USEEIO model |
+| useeior | https://github.com/USEPA/useeior | R package for USEEIO |
+| useeio-state | https://github.com/modelearth/useeio-state | State-level USEEIO data |
+| useeio-json | https://github.com/modelearth/useeio-json | USEEIO JSON data |
+| mario | https://github.com/modelearth/mario | Multi-regional input-output |
+| localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
 
 <br>
 
-## Additional webroot repo clusters
+## Data-Pipeline - static output
 
-These local webroots have unique focuses to provide Claude with a common set of files.
+These output repos may be pulled into local webroots during data processing, but we avoid committing these as a submodules in the webroots due to their large size. The static data in these repos is pulled directly through Github Pages and the Cloudflare CDN.
 
-1. **ProjectTools** - [webroot](https://github.com/modelearth/webroot) JAM Stack with Rust API with Azure PostgreSQL - [team repo](https://model.earth/team/)
+| Name | Repository | Description |
+|------|------------|-------------|
+| data-pipeline | https://github.com/modelearth/data-pipeline | Python data processing pipeline |
+| community-data | https://github.com/modelearth/community-data | Community-level data outputs |
+| community-timelines | https://github.com/modelearth/community-timelines | Timeline data for communities |
+| community-zipcodes | https://github.com/modelearth/community-zipcodes | ZIP code level community data |
+| community-forecasting | https://github.com/modelearth/community-forecasting | Forecasting frontend (legacy) |
+| dataflow | https://github.com/modelearth/dataflow | Data flow NextJS UX |
 
-2. **MaterialScience** - [MaterialScience webroot](https://github.com/modelearth/MaterialScience), [products](https://model.earth/products/), [profile](https://model.earth/profile/), [exiobase](https://github.com/ModelEarth/exiobase/blob/main/tradeflow/CLAUDE.md), [io](https://model.earth/io/), [useeio.js](https://model.earth/useeio.js/footprint/), useeio-widgets, useeio-widgets-without-react, useeiopy, useeio_api, useeio, useeior, useeio-state, useeio-json, mario
-
-3. **DataFlow** - [data-pipeline](https://model.earth/data-pipeline/), community-data, community-timelines, community-zipcodes, community-forecasting, dataflow
-
+<br>
 
 ## TODO
 
