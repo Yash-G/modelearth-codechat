@@ -2,7 +2,7 @@
 
 ## RAG Pipeline Documentation
 
-The RAG pipeline processes files from a local repository (e.g., `ModelEarth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with 
+The RAG pipeline processes files from a local repository (e.g., `modelearth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with 
 
 **OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).  Get $5 in credits, you won't need them all.
 
@@ -34,40 +34,24 @@ Or start Claude
 	npx @anthropic-ai/claude-code
 
 
-## PartnerTools webroot
-
-<a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
-
-This webroot is simple, with the intent that Claude will pull additional submodules based on coder choices.
-
-| Name | Repository | Description |
-|------|------------|-------------|
-| team | https://github.com/modelearth/team | [Team - Rust REST API for Azure](../team) |
-| localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
-| feed | https://github.com/modelearth/feed | FeedPlayer video/gallery |
-| swiper | https://github.com/modelearth/swiper | UI swiper components |
-| comparison | https://github.com/modelearth/comparison | Trade Flow tools |
-| products | https://github.com/ModelEarth/projects | Overview and TODOs |
-<br>
-
 ## ModelEarth webroot (MAIN RAG)
 
 <a href="http://localhost:3001/" style="float:right">Runs on port 3001</a>
 
-These repos are submodules in the [modelearth](https://model.earth/modelearth/) webroot.
-This webroot is a fork of Anything LLM NextJS with submoduoles added.
+Fork the [modelearth webroot](https://github.com/modelearth/modelearth/) and run the [local install steps with Claude](https://model.earth/modelearth/).  
+This webroot is a fork of Anything LLM NextJS with modelearth repos as submoduoles.
 
 | Name | Repository | Description |
 |------|------------|-------------|
-| home | https://github.com/modelearth/home | Everybody's Home Page |
-| localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
-| realitystream | https://github.com/modelearth/realitystream | [ML Models Colab](../realitystream/) |
-| cloud | https://github.com/modelearth/realitystream | Flask hosting of colabs |
-| feed | https://github.com/modelearth/feed | FeedPlayer video/gallery |
-| swiper | https://github.com/modelearth/swiper | UI swiper components |
-| comparison | https://github.com/modelearth/comparison | Trade Flow tools |
-| codechat | https://github.com/ModelEarth/codechat | Code chat interface |
-| projects | https://github.com/ModelEarth/projects | Overview and TODOs |
+| [codechat](../codechat/) | [github.com/modelearth/codechat](https://github.com/modelearth/codechat) | Code chat interface development |
+| [home](../home/) | [github.com/modelearth/home](https://github.com/modelearth/home) | Everybody's Home Page |
+| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
+| [realitystream](../realitystream/) | [github.com/modelearth/realitystream](https://github.com/modelearth/realitystream) | ML Run Models Colab) |
+| [cloud](../cloud/) | [github.com/modelearth/cloud](https://github.com/modelearth/cloud) | Flask hosting of colabs |
+| [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
+| [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper components |
+| [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow tools |
+| [projects](../projects/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs |
 <br>
 
 ## MaterialScience webroot
@@ -78,24 +62,41 @@ These repos focus on material science, environmental impact, and supply chain an
 
 | Name | Repository | Description |
 |------|------------|-------------|
-| MaterialScience | https://github.com/modelearth/MaterialScience | MaterialScience webroot |
-| products | https://github.com/modelearth/products | Products frontend and python |
-| products-data | https://github.com/modelearth/products-data | Products data output |
-| profile | https://github.com/modelearth/profile | Profile frontend analysis |
-| exiobase | https://github.com/ModelEarth/exiobase | Trade flow output to .csv and SQL |
-| io | https://github.com/modelearth/io | Input-output analysis |
-| useeio.js | https://github.com/modelearth/useeio.js | JavaScript footprint tools |
-| useeio-widgets | https://github.com/USEPA/useeio-widgets | USEEIO React widgets |
-| useeio-widgets-without-react | https://github.com/modelearth/useeio-widgets-without-react | USEEIO widgets without React |
-| useeiopy | https://github.com/USEPA/useeiopy | Python USEEIO library |
-| useeio_api | https://github.com/USEPA/useeio_api | USEEIO REST API |
-| useeio | https://github.com/USEPA/useeio | Core USEEIO model |
-| useeior | https://github.com/USEPA/useeior | R package for USEEIO |
-| useeio-state | https://github.com/modelearth/useeio-state | State-level USEEIO data |
-| useeio-json | https://github.com/modelearth/useeio-json | USEEIO JSON data |
-| mario | https://github.com/modelearth/mario | Multi-regional input-output |
-| localsite | https://github.com/ModelEarth/localsite | Core CSS / JS utilities, timeline, tabulator |
+| [MaterialScience](../MaterialScience/) | [github.com/modelearth/MaterialScience](https://github.com/modelearth/MaterialScience) | MaterialScience webroot |
+| [products](../products/) | [github.com/modelearth/products](https://github.com/modelearth/products) | Products frontend and python |
+| [products-data](../products-data/) | [github.com/modelearth/products-data](https://github.com/modelearth/products-data) | Products data output |
+| [profile](../profile/) | [github.com/modelearth/profile](https://github.com/modelearth/profile) | Profile frontend analysis |
+| [exiobase](../exiobase/) | [github.com/modelearth/exiobase](https://github.com/modelearth/exiobase) | Trade flow output to .csv and SQL |
+| [io](../io/) | [github.com/modelearth/io](https://github.com/modelearth/io) | Input-output analysis |
+| [useeio.js](../useeio.js/) | [github.com/modelearth/useeio.js](https://github.com/modelearth/useeio.js) | JavaScript footprint tools |
+| [useeio-widgets](../useeio-widgets/) | [github.com/USEPA/useeio-widgets](https://github.com/USEPA/useeio-widgets) | USEEIO React widgets |
+| [useeio-widgets-without-react](../useeio-widgets-without-react/) | [github.com/modelearth/useeio-widgets-without-react](https://github.com/modelearth/useeio-widgets-without-react) | USEEIO widgets without React |
+| [useeiopy](../useeiopy/) | [github.com/USEPA/useeiopy](https://github.com/USEPA/useeiopy) | Python USEEIO library |
+| [useeio_api](../useeio_api/) | [github.com/USEPA/useeio_api](https://github.com/USEPA/useeio_api) | USEEIO REST API |
+| [useeio](../useeio/) | [github.com/USEPA/useeio](https://github.com/USEPA/useeio) | Core USEEIO model |
+| [useeior](../useeior/) | [github.com/USEPA/useeior](https://github.com/USEPA/useeior) | R package for USEEIO |
+| [useeio-state](../useeio-state/) | [github.com/modelearth/useeio-state](https://github.com/modelearth/useeio-state) | State-level USEEIO data |
+| [useeio-json](../useeio-json/) | [github.com/modelearth/useeio-json](https://github.com/modelearth/useeio-json) | USEEIO JSON data |
+| [mario](../mario/) | [github.com/modelearth/mario](https://github.com/modelearth/mario) | Multi-regional input-output |
+| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
 
+<br>
+
+## PartnerTools webroot
+
+<a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
+
+This webroot is simple, with the intent that Claude will pull additional submodules based on coder choices.
+
+| Name | Repository | Description |
+|------|------------|-------------|
+| [webroot](../webroot/) | [github.com/modelearth/team](https://github.com/modelearth/webroot) | Basic webroot |
+| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
+| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
+| [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
+| [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper components |
+| [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow tools |
+| [products](../products/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs |
 <br>
 
 ## Data-Pipeline - static output
@@ -104,18 +105,18 @@ These output repos may be pulled into local webroots during data processing, but
 
 | Name | Repository | Description |
 |------|------------|-------------|
-| data-pipeline | https://github.com/modelearth/data-pipeline | Python data processing pipeline |
-| community-data | https://github.com/modelearth/community-data | Community-level data outputs |
-| community-timelines | https://github.com/modelearth/community-timelines | Timeline data for communities |
-| community-zipcodes | https://github.com/modelearth/community-zipcodes | ZIP code level community data |
-| community-forecasting | https://github.com/modelearth/community-forecasting | Forecasting frontend (legacy) |
-| dataflow | https://github.com/modelearth/dataflow | Data flow NextJS UX |
+| [data-pipeline](../data-pipeline/) | [github.com/modelearth/data-pipeline](https://github.com/modelearth/data-pipeline) | Python data processing pipeline |
+| [community-data](../community-data/) | [github.com/modelearth/community-data](https://github.com/modelearth/community-data) | Community-level data outputs |
+| [community-timelines](../community-timelines/) | [github.com/modelearth/community-timelines](https://github.com/modelearth/community-timelines) | Timeline data for communities |
+| [community-zipcodes](../community-zipcodes/) | [github.com/modelearth/community-zipcodes](https://github.com/modelearth/community-zipcodes) | ZIP code level community data |
+| [community-forecasting](../community-forecasting/) | [github.com/modelearth/community-forecasting](https://github.com/modelearth/community-forecasting) | Forecasting frontend (legacy) |
+| [dataflow](../dataflow/) | [github.com/modelearth/dataflow](https://github.com/modelearth/dataflow) | Data flow NextJS UX |
 
 <br>
 
 ## TODO
 
-- Chunk, Embed, Store in VectorDB - **Modelearth repos** (listed above and in [modelearth/submodules.jsx](https://github.com/ModelEarth/modelearth)) - Lokesh
+- Chunk, Embed, Store in VectorDB - **Modelearth repos** (listed above and in [modelearth/submodules.jsx](https://github.com/modelearth/modelearth)) - Lokesh
 - Chunk, Embed, Store in VectorDB - **Team JAM Stack with Rust API and Azure** (`team`) 
 - Chunk, Embed, Store in VectorDB - **IO repos** (`exiobase/tradeflow`, `profile`, `io`, `useeio.js`, `useeio-widgets`, `useeio-widgets-without-react`, `useeiopy`, `useeio_api`, `useeio`, `useeior`, `useeio-state`, `useeio-json`)
 - Chunk, Embed, Store in VectorDB - **Python Pipeline and output repos** (`data-pipeline`, `community-data`, `community-timelines`, `community-zipcodes`, `community-forecasting`)
