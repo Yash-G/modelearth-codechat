@@ -1,38 +1,6 @@
 # CodeChat
 
-## RAG Pipeline Documentation
-
-The RAG pipeline processes files from a local repository (e.g., `modelearth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with 
-
-**OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).  Get $5 in credits, you won't need them all.
-
-Users will query via a **frontend**, where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries 
-
-**Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
-
-**GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
-
-Add your 3 keys to .env and run to test the RAG process (Mac version):
-Claude will install: python-dotenv pinecone-client openai google-generativeai
-
-Windows PC
-
-	python -m venv env
-	env\Scripts\activate.bat
-
-Mac/Linux
-
-	python3 -m venv env
-	source env/bin/activate
-
-Start
-
-	python rag_query_test.py
-
-Or start Claude
-
-	npx @anthropic-ai/claude-code
-
+Scroll down for our RAG pipeline process.
 
 ## ModelEarth webroot (MAIN RAG)
 
@@ -115,6 +83,41 @@ These output repos may be pulled into local webroots during data processing, but
 | [dataflow](../dataflow/) | [github.com/modelearth/dataflow](https://github.com/modelearth/dataflow) | Data flow NextJS UX |
 
 <br>
+
+## RAG Pipeline Documentation
+
+The RAG pipeline processes files from a local repository (e.g., `modelearth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with 
+
+**OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).  Get $5 in credits, you won't need them all.
+
+Users will query via a **frontend**, where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries 
+
+**Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
+
+**GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
+
+Add your 3 keys to .env and run to test the RAG process (Mac version):
+Claude will install: python-dotenv pinecone-client openai google-generativeai
+
+Windows PC
+
+	python -m venv env
+	env\Scripts\activate.bat
+
+Mac/Linux
+
+	python3 -m venv env
+	source env/bin/activate
+
+Start
+
+	python rag_query_test.py
+
+Or start Claude
+
+	npx @anthropic-ai/claude-code
+
+
 
 ## TODO
 
