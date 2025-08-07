@@ -195,6 +195,6 @@ Embedding would obviously be OpenAI’s small model since it's lightweight.
 
 ## Future Enhancements
 
-Now we set up 5 RAG training filesets, which we'll combine as agents to support broader questions about the entire system.  
+Now we set up 4 RAG training filesets, which we'll combine as agents to support broader questions about the entire system.  
 Filesets 1, 2, and 3 can optionally be grouped into the same RAG, depending on overlap and use case.  
 Each RAG will handle a specific part of the system, and combining them lets us scale to system-level Q&A across multiple domains.
