@@ -88,11 +88,11 @@ These repos focus on material science, environmental impact, and supply chain an
 
 <a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
 
-This webroot is simple, with the intent that Claude will pull additional submodules based on coder choices.
+Starter webroot for submodule additions based on prompter choices and config setting.
 
 | Name | Repository | Description |
 |------|------------|-------------|
-| [webroot](../webroot/) | [github.com/modelearth/webroot](https://github.com/modelearth/webroot) | Basic webroot |
+| [webroot](../PartnerTools) | [github.com/modelearth/webroot](https://github.com/modelearth/PartnerTools) | PartnerTools webroot |
 | [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
 | [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
 | [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
