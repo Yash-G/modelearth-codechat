@@ -46,6 +46,7 @@ This webroot is a fork of Anything LLM NextJS with modelearth repos as submoduol
 | [codechat](../codechat/) | [github.com/modelearth/codechat](https://github.com/modelearth/codechat) | Code chat interface development |
 | [home](../home/) | [github.com/modelearth/home](https://github.com/modelearth/home) | Everybody's Home Page |
 | [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
+| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
 | [realitystream](../realitystream/) | [github.com/modelearth/realitystream](https://github.com/modelearth/realitystream) | ML Run Models Colab) |
 | [cloud](../cloud/) | [github.com/modelearth/cloud](https://github.com/modelearth/cloud) | Flask hosting of colabs |
 | [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
@@ -79,6 +80,7 @@ These repos focus on material science, environmental impact, and supply chain an
 | [useeio-json](../useeio-json/) | [github.com/modelearth/useeio-json](https://github.com/modelearth/useeio-json) | USEEIO JSON data |
 | [mario](../mario/) | [github.com/modelearth/mario](https://github.com/modelearth/mario) | Multi-regional input-output |
 | [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
+| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
 
 <br>
 
@@ -90,7 +92,7 @@ This webroot is simple, with the intent that Claude will pull additional submodu
 
 | Name | Repository | Description |
 |------|------------|-------------|
-| [webroot](../webroot/) | [github.com/modelearth/team](https://github.com/modelearth/webroot) | Basic webroot |
+| [webroot](../webroot/) | [github.com/modelearth/webroot](https://github.com/modelearth/webroot) | Basic webroot |
 | [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
 | [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
 | [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
