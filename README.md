@@ -2,7 +2,27 @@
 
 Scroll down for our RAG pipeline process.
 
-## ModelEarth webroot (MAIN RAG)
+
+## Webroot
+
+<a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
+
+Webroot for submodule additions based on prompter choices and config settings.
+
+| Name | Repository | Description |
+|------|------------|-------------|
+| [webroot](../) | [github.com/modelearth/webroot](https://github.com/modelearth/webroot) | PartnerTools webroot |
+| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
+| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
+| [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
+| [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper components |
+| [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow tools |
+| [products](../products/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs |
+<br>
+
+## Webroot with Anything LLM (ModelEarth)
+
+This is a temporary webroot. Later we'll pull AnythingLLM as a submodule of the webroot above.  
 
 <a href="http://localhost:3001/" style="float:right">Runs on port 3001</a>
 
@@ -52,22 +72,6 @@ These repos focus on material science, environmental impact, and supply chain an
 
 <br>
 
-## Webroot
-
-<a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
-
-Starter webroot for submodule additions based on prompter choices and config setting.
-
-| Name | Repository | Description |
-|------|------------|-------------|
-| [webroot](../) | [github.com/modelearth/webroot](https://github.com/modelearth/webroot) | PartnerTools webroot |
-| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
-| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
-| [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
-| [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper components |
-| [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow tools |
-| [products](../products/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs |
-<br>
 
 ## Data-Pipeline - static output
 
