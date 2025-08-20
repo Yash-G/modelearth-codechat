@@ -6,21 +6,31 @@ Scroll down for our RAG pipeline process.
 
 <a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
 
-Webroot for submodule additions based on prompter choices and config settings.
+Our webroot repo loads these submodules, plus claude.md and github deployment commands - [Get Started](https://model.earth/webroot/)
 
 | Name | Repository | Description |
 |------|------------|-------------|
 | [webroot](../) | [github.com/modelearth/webroot](https://github.com/modelearth/webroot) | PartnerTools webroot |
-| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
-| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
+| [cloud](../comparison/) | [github.com/modelearth/cloud](https://github.com/modelearth/cloud) | Flask for python colabs |
+| [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow data visualizations |
 | [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
-| [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper components |
-| [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow tools |
-| [products](../products/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs |
+| [home](../home/) | [github.com/modelearth/home](https://github.com/modelearth/home) | Everybody's Home Page|
+| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core javacript utilities, tabulator |
+| [products](../products/) | [github.com/modelearth/products](https://github.com/modelearth/products) | Building Transparency Product API |
+| [projects](../projects/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODO - Projects Hub |
+| [realitystream](../realitystream/) | [github.com/modelearth/realitystream](https://github.com/modelearth/realitystream) | Run Models colab |
+| [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper component for FeedPlayer |
+| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust API for Azure and AI Insights |
 
+<br>
 
-Developers optionally clone 4 trade repos into their local webroot:  
-exiobase, profile, useeio.js, io.
+Additional repos, optionally cloned into webroot:
+
+**trade repos:** exiobase, profile, useeio.js, io
+
+**support repos:** codechat, community, nisar, webhook, reports 
+
+**inactive repos:** planet, earthscape, modelearth
 <br>
 
 
@@ -31,6 +41,8 @@ These output repos may be pulled into local webroots during data processing, but
 | Name | Repository | Description |
 |------|------------|-------------|
 | [data-pipeline](../data-pipeline/) | [github.com/modelearth/data-pipeline](https://github.com/modelearth/data-pipeline) | Python data processing pipeline |
+| [trade-data](../trade-data/) | [github.com/modelearth/trade-data](https://github.com/modelearth/trade-data) | Tradeflow data outputs |
+| [products-data](../products-data/) | [github.com/modelearth/products-data](https://github.com/modelearth/products-data) | Product impact profiles |
 | [community-data](../community-data/) | [github.com/modelearth/community-data](https://github.com/modelearth/community-data) | Community-level data outputs |
 | [community-timelines](../community-timelines/) | [github.com/modelearth/community-timelines](https://github.com/modelearth/community-timelines) | Timeline data for communities |
 | [community-zipcodes](../community-zipcodes/) | [github.com/modelearth/community-zipcodes](https://github.com/modelearth/community-zipcodes) | ZIP code level community data |

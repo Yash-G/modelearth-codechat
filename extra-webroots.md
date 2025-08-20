@@ -19,7 +19,7 @@ This webroot is a fork of Anything LLM NextJS with modelearth repos as submoduol
 | [home](../home/) | [github.com/modelearth/home](https://github.com/modelearth/home) | Everybody's Home Page |
 | [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core CSS / JS utilities, timeline, tabulator |
 | [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust REST API for Azure |
-| [realitystream](../realitystream/) | [github.com/modelearth/realitystream](https://github.com/modelearth/realitystream) | ML Run Models Colab) |
+| [realitystream](../realitystream/) | [github.com/modelearth/realitystream](https://github.com/modelearth/realitystream) | ML Run Models Colab |
 | [cloud](../cloud/) | [github.com/modelearth/cloud](https://github.com/modelearth/cloud) | Flask hosting of colabs |
 | [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
 | [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper components |
@@ -27,7 +27,7 @@ This webroot is a fork of Anything LLM NextJS with modelearth repos as submoduol
 | [projects](../projects/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs |
 <br>
 
-## MaterialScience webroot
+## MaterialScience MRIO webroot
 
 <a href="http://localhost:8888/" style="float:right">Runs on port 8888</a>
 
