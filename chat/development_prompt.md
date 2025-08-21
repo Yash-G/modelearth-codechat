@@ -1,4 +1,4 @@
-# Model Earth Chat Assistant - Development Prompt
+# Code Chat Assistant - Development Prompt
 
 ## Project Overview
 You are building a ChatGPT-style frontend interface for a RAG (Retrieval-Augmented Generation) powered codebase assistant. This interface connects to an AWS Lambda backend that queries a Pinecone vector database containing chunked code from various repositories.

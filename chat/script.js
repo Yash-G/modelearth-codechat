@@ -96,7 +96,7 @@ class ChatAssistant {
                         <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                     </svg>
                 </div>
-                <h2>Welcome to Model Earth Chat Assistant</h2>
+                <h2>Welcome to Code Chat Assistant</h2>
                 <p>Hit me up with your questions about the codebase! I can help you understand code, find specific implementations, or explain how different parts work together.</p>
             </div>
         `;
@@ -333,9 +333,7 @@ class ChatAssistant {
             if (this.apiEndpoint === 'YOUR_AWS_LAMBDA_ENDPOINT_HERE') {
                 // Mock repositories for development
                 this.availableRepositories = [
-                    'modelearth/localsite',
-                    'modelearth/community',
-                    'modelearth/io'
+                    "modelearth/localsite", "modelearth/projects", "modelearth/realitystream", "modelearth/cloud", "modelearth/team"
                 ];
             } else {
                 const response = await fetch(`${this.apiEndpoint}/repositories`, {

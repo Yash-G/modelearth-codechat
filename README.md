@@ -1,6 +1,6 @@
 # CodeChat
 
-Scroll down for our RAG pipeline process.
+Scroll down for our RAG pipeline process and view our [chat interface](chat).
 
 ## Webroot
 

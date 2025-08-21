@@ -1,4 +1,4 @@
-# Model Earth Chat Assistant
+# Code Chat Assistant
 
 A ChatGPT-style interface for querying your codebase using RAG (Retrieval-Augmented Generation). This frontend connects to your AWS Lambda backend to provide intelligent answers about your code repositories.
 
@@ -47,7 +47,7 @@ The repository dropdown is automatically populated from your Pinecone database n
 
 ```json
 {
-    "repositories": ["modelearth/localsite", "modelearth/community", "modelearth/io"]
+    "repositories": ["modelearth/localsite", "modelearth/projects", "modelearth/team", "modelearth/cloud", "modelearth/realitystream"]
 }
 ```
 
