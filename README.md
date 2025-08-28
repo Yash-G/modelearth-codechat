@@ -1,3 +1,4 @@
+<div class="floatRight" style="max-width:200px;"><a href="overview/img/flowchart.png"><img src="overview/img/flowchart.png" style="width:100%"></a></div>
 # CodeChat
 
 Scroll down for our RAG pipeline process and view our [chat interface](chat).
