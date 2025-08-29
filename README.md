@@ -25,11 +25,13 @@ Our webroot repo loads these submodules, plus claude.md and github deployment co
 
 <br>
 
+Recently added submodules:
+
+codechat, reports, exiobase, profile, io, community-forecasting
+
 Additional repos, optionally cloned into webroot:
 
-**trade repos:** exiobase, profile, useeio.js, io
-
-**support repos:** codechat, community, nisar, webhook, reports 
+**Extra repos:** topojson, community, nisar, useeio.js
 
 **inactive repos:** planet, earthscape, modelearth
 <br>
