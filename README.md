@@ -31,9 +31,9 @@ codechat, reports, exiobase, profile, io, community-forecasting
 
 Additional repos, optionally cloned into webroot:
 
-**Extra repos:** topojson, community, nisar, useeio.js
+**Extra repos:** topojson, community, nisar, useeio-json
 
-**inactive repos:** planet, earthscape, modelearth
+**Inactive repos:** planet, earthscape, modelearth
 <br>
 
 
