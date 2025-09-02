@@ -89,13 +89,9 @@ Or start Claude
 
 
 
-## TODO
+## Projects
 
-- Chunk, Embed, Store in VectorDB - **Modelearth repos** (listed above and in [modelearth/submodules.jsx](https://github.com/modelearth/modelearth)) - Lokesh
-- Chunk, Embed, Store in VectorDB - **Team JAM Stack with Rust API and Azure** (`team`) 
-- Chunk, Embed, Store in VectorDB - **IO repos** (`exiobase/tradeflow`, `profile`, `io`, `useeio.js`, `useeio-widgets`, `useeio-widgets-without-react`, `useeiopy`, `useeio_api`, `useeio`, `useeior`, `useeio-state`, `useeio-json`)
-- Chunk, Embed, Store in VectorDB - **Python Pipeline and output repos** (`data-pipeline`, `community-data`, `community-timelines`, `community-zipcodes`, `community-forecasting`)
-- Reuse pages in our [Modelearth](https://model.earth/modelearth/) fork of AnythingLLM for Chat Page starters
+- Chunk, Embed, Store in VectorDB - **Webroot and submodules** (listed above and in [webroot/submodules.jsx](https://github.com/modelearth/webroot))
 - Write AWS Lambda Backend (embed queries, fetch from Pinecone, and query Gemini)
 - Sync VectorDB with PRs (GitHub Actions on PR merges)
 
@@ -105,7 +101,7 @@ Or start Claude
 
 **Chunk, Embed, Store** – check out `rag_ingestion_pipeline.ipynb`
 
-- I have used Tree-sitter for chunking; explore better strategies if available
+- We used Tree-sitter for chunking; explore better strategies if available
 - Embedding using OpenAI `text-embedding-3-small` (dimension: 1536)
 - Create a free Pinecone account and store embeddings with the metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`)
 - ✅ Ensure no file type is missed during chunking, embedding, or storing — any missing content could lead to loss of critical information
@@ -135,8 +131,6 @@ Or start Claude
 ---
 
 ## Front End
-
-Reuse pages in our [Modelearth](https://model.earth/modelearth/) fork of AnythingLLM for Chat Page starters
 
 Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
 
