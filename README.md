@@ -1,4 +1,3 @@
-<div class="floatRight" style="max-width:200px;"><a href="overview/img/flowchart.png"><img src="overview/img/flowchart.png" style="width:100%"></a></div>
 # CodeChat
 
 Scroll down for our RAG pipeline process and view our [chat interface](chat).
@@ -7,31 +6,33 @@ Scroll down for our RAG pipeline process and view our [chat interface](chat).
 
 <a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
 
-Our webroot repo loads these submodules, plus claude.md and github deployment commands - [Get Started](https://model.earth/webroot/)
+Our webroot repo loads these submodules, plus claude.md - [Get Started](https://model.earth/webroot/)
 
 | Name | Repository | Description |
 |------|------------|-------------|
 | [webroot](../) | [github.com/modelearth/webroot](https://github.com/modelearth/webroot) | PartnerTools webroot |
-| [cloud](../comparison/) | [github.com/modelearth/cloud](https://github.com/modelearth/cloud) | Flask for python colabs |
+| [cloud](../cloud/) | [github.com/modelearth/cloud](https://github.com/modelearth/cloud) | Flask for python colabs |
+| [codechat](../codechat/) | [github.com/modelearth/codechat](https://github.com/modelearth/codechat) | Chat RAG using Pinecone |
+| [community-forecasting](../community-forecasting/) | [github.com/modelearth/community-forecasting](https://github.com/modelearth/community-forecasting) | Javascript-based ML with maps |
 | [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow data visualizations |
+| [exiobase](../exiobase/) | [github.com/modelearth/comparison](https://github.com/modelearth/exiobase) | Trade data to CSV and SQL |
 | [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
-| [home](../home/) | [github.com/modelearth/home](https://github.com/modelearth/home) | Everybody's Home Page|
+| [home](../home/) | [github.com/modelearth/home](https://github.com/modelearth/home) | Everybody's Home Page |
+| [io](../io/) | [github.com/modelearth/io](https://github.com/modelearth/io) | React Input-Output widgets for states |
 | [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core javacript utilities, tabulator |
 | [products](../products/) | [github.com/modelearth/products](https://github.com/modelearth/products) | Building Transparency Product API |
-| [projects](../projects/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODO - Projects Hub |
+| [profile](../profile/) | [github.com/modelearth/profile](https://github.com/modelearth/profile) | Footprint Reports for communities and industries |
+| [projects](../projects/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs - Projects Hub |
 | [realitystream](../realitystream/) | [github.com/modelearth/realitystream](https://github.com/modelearth/realitystream) | Run Models colab |
+| [reports](../reports/) | [github.com/modelearth/realitystream](https://github.com/modelearth/reports) | Output from RealityStream colab |
 | [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper component for FeedPlayer |
 | [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust API for Azure and AI Insights |
 
-<br>
+<br><div class="floatRight" style="max-width:240px;"><a href="overview/img/flowchart.png"><img src="overview/img/flowchart.png" style="width:100%"></a></div>
 
-Recently added submodules:
+Optional:
 
-codechat, reports, exiobase, profile, io, community-forecasting
-
-Additional repos, optionally cloned into webroot:
-
-**Extra repos:** topojson, community, nisar, useeio-json
+**Extra repos:** (forked and cloned into webroot) topojson, community, nisar, useeio-json, trade-data
 
 **Inactive repos:** planet, earthscape, modelearth
 <br>
@@ -60,7 +61,7 @@ The RAG pipeline processes files from a local repository (e.g., `modelearth/loca
 
 **OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).  Get $5 in credits, you won't need them all.
 
-Users will query via a **frontend**, where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries 
+Users will query via the [chat frontend](chat), where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries 
 
 **Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
 
@@ -128,13 +129,11 @@ Or start Claude
 - Update the ingestion pipeline to include appropriate chunking logic.
 - Update this table accordingly to reflect the new file type, category, strategy, and embedding logic.
 
----
 
 ## Front End
 
 Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
 
----
 
 ## Backend
 
@@ -147,23 +146,14 @@ Write a Lambda function in Python (`lambda_function.py`) using the AWS free tier
 
 Deploy in AWS Lambda with `PINECONE_API_KEY` in environment variables.
 
----
 
 ## VectorDB Sync
 
 GitHub sync — develop a solution for how we can sync the PR to the vector DB.
 
-A good solution is: Have the `file_path` in the metadata, right?  
+A good solution is to have the `file_path` in the metadata, right?  
 So whenever the PR is merged, we will replace all vectors related to that file with the updated file vectors.
 
 We are doing this in GitHub Actions, so chunking should be lightweight.
 
 For the initial load, we used Tree-sitter. But try to figure out that if the PR is a Python file, then we only build Tree-sitter Python and chunk it.  Embedding would obviously be OpenAI’s small model since it's lightweight.
-
----
-
-## Future Enhancements
-
-Now we set up 4 RAG training filesets, which we'll combine as agents to support broader questions about the entire system.  
-Filesets 1, 2, and 3 can optionally be grouped into the same RAG, depending on overlap and use case.  
-Each RAG will handle a specific part of the system, and combining them lets us scale to system-level Q&A across multiple domains.
