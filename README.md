@@ -152,8 +152,9 @@ Deploy in AWS Lambda with `PINECONE_API_KEY` in environment variables.
 GitHub sync — develop a solution for how we can sync the PR to the vector DB.
 
 A good solution is to have the `file_path` in the metadata, right?  
-So whenever the PR is merged, we will replace all vectors related to that file with the updated file vectors.
 
-We are doing this in GitHub Actions, so chunking should be lightweight.
+Whenever a PR is merged, we replace all vectors related to that file with the updated file vectors.
+
+We do the update with a GitHub Action in our webroot ([vector_sync.yml](https://github.com/ModelEarth/webroot/blob/main/.github/workflows/vector_sync.yml)), so chunking should be lightweight.
 
 For the initial load, we used Tree-sitter. But try to figure out that if the PR is a Python file, then we only build Tree-sitter Python and chunk it.  Embedding would obviously be OpenAI’s small model since it's lightweight.
