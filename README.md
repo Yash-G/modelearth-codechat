@@ -1,12 +1,18 @@
-# CodeChat
-
-Scroll down for our RAG pipeline process and view our [chat interface](chat).
+<div class='titleflex'>
+    <div>
+    	<h1>CodeChat</h1>
+		Scroll down for our RAG pipeline process and view our <a href="chat">chat interface</a>.
+    </div>
+    <a href="https://github.com/ModelEarth/codechat" target="codechat_github" class="github-link">
+        <img src="../localsite/img/icon/github/github.png" alt="Codechat Repository">
+    </a>
+</div>
 
 ## Webroot
 
 <a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
 
-Our webroot repo loads these submodules, plus claude.md - [Get Started](https://model.earth/webroot/)
+Our webroot repo loads these submodules, plus claude.md and [vector_sync.yml](https://github.com/ModelEarth/webroot/blob/main/.github/workflows/vector_sync.yml) - [Get Started](https://model.earth/webroot/)
 
 | Name | Repository | Description |
 |------|------------|-------------|
