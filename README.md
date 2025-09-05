@@ -74,17 +74,27 @@ Users will query via the [chat frontend](chat), where an **AWS Lambda backend** 
 **GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
 
 Add your 3 keys to .env and run to test the RAG process (Mac version):
-Claude will install: python-dotenv pinecone-client openai google-generativeai
+
+### Installing Dependencies
+
+The `requirements.txt` file automatically installs these core packages and their dependencies:
+- `python-dotenv` - Environment variable management
+- `pinecone` - Vector database client  
+- `openai` - OpenAI API client for embeddings
+- `google-generativeai` - Gemini API client for responses
+- Additional core dependencies: `certifi`, `typing-extensions`, `urllib3`, `requests`, `pydantic`, `anyio`
 
 Windows PC
 
 	python -m venv env
 	env\Scripts\activate.bat
+	pip install -r requirements.txt
 
 Mac/Linux
 
 	python3 -m venv env
 	source env/bin/activate
+	pip install -r requirements.txt
 
 Start
 
@@ -93,6 +103,40 @@ Start
 Or start Claude
 
 	npx @anthropic-ai/claude-code
+
+### AWS Lambda Deployment Issues
+
+**Error: `Unable to import module 'lambda_function': no module named 'pydantic_core._pydantic_core'`**
+
+This error occurs when deploying to AWS Lambda because `pydantic` (required by the OpenAI client) has compiled dependencies that may not be compatible with Lambda's runtime environment.
+
+**Solutions:**
+
+1. **Use Lambda Layers** (Recommended):
+   ```bash
+   # Create a layer with dependencies
+   mkdir python
+   pip install -r requirements.txt -t python/
+   zip -r dependencies-layer.zip python/
+   # Upload as Lambda Layer and attach to your function
+   ```
+
+2. **Platform-specific Installation**:
+   ```bash
+   # Install for Linux x86_64 (Lambda runtime)
+   pip install -r requirements.txt --platform linux_x86_64 --only-binary=:all: -t package/
+   ```
+
+3. **Alternative: Use Docker for Lambda**:
+   ```dockerfile
+   FROM public.ecr.aws/lambda/python:3.11
+   COPY requirements.txt .
+   RUN pip install -r requirements.txt
+   COPY lambda_function.py .
+   CMD ["lambda_function.lambda_handler"]
+   ```
+
+4. **Lightweight Alternative**: Replace `pydantic`-heavy clients with `requests` for direct API calls to reduce dependency complexity.
 
 
 
