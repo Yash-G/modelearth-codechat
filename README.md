@@ -199,12 +199,30 @@ Deploy in AWS Lambda with `PINECONE_API_KEY` in environment variables.
 
 ## VectorDB Sync
 
-GitHub sync — develop a solution for how we can sync the PR to the vector DB.
+### Implementation & Usage
 
-A good solution is to have the `file_path` in the metadata, right?  
+- Script: `codechat/vectordb_sync.py` (commit-range replay; supports A/M/D + rename)
+- Workflow: `webroot/.github/workflows/vector_sync.yml` (runs on merges/pushes to `main`)
 
-Whenever a PR is merged, we replace all vectors related to that file with the updated file vectors.
+What it does
+- Replays `BASE..HEAD` and expands changes into file-level A/M/D across the superproject and changed submodules.
+- Handles renames by deleting the old path and indexing the new path (R → D old + M new).
+- Add/Modify: pre-delete vectors for that `file_path`, then chunk → embed (OpenAI `text-embedding-3-small`) → upsert.
+- Delete: remove vectors filtered by `repo_name` + `file_path`.
+- Embeddings are content-only; `file_path` and other fields live in metadata so updates are precise and idempotent.
 
-We do the update with a GitHub Action in our webroot ([vector_sync.yml](https://github.com/ModelEarth/webroot/blob/main/.github/workflows/vector_sync.yml)), so chunking should be lightweight.
+Secrets (set in webroot repo → Settings → Actions → Secrets and variables)
+- `PINECONE_API_KEY` (required)
+- `OPENAI_API_KEY` (required)
+- Optional serverless: `PINECONE_CLOUD=aws`, `PINECONE_REGION=us-east-1`
+- Optional classic: `PINECONE_ENV=us-west1-gcp`
+- Optional index: `PINECONE_INDEX=repo-chunks` (default)
 
-For the initial load, we used Tree-sitter. But try to figure out that if the PR is a Python file, then we only build Tree-sitter Python and chunk it.  Embedding would obviously be OpenAI’s small model since it's lightweight.
+Local testing (real APIs; cleans up vectors)
+- Ensure `codechat/.env` contains the keys above.
+- Run: `python codechat/test_vectordb_sync.py`
+
+Action logs and errors
+- Actions → VectorDB Sync → open the run; expand the sync step to view logs.
+- If errors occur, the workflow uploads `vector-sync-errors` (artifact with `codechat/.vector_sync_errors.jsonl`) and adds a summary to the job output.
+
