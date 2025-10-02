@@ -1,126 +1,97 @@
-# Code Chat Assistant
+# CodeChat Frontend
 
-A ChatGPT-style interface for querying your codebase using RAG (Retrieval-Augmented Generation). This frontend connects to your AWS Lambda backend to provide intelligent answers about your code repositories.
+A modern chat interface for querying your codebase using AI. This frontend connects to the AWS Lambda backend to provide intelligent answers about your code repositories.
 
-## Features
+## Quick Start
 
-- 🎨 **ChatGPT-style Interface** - Clean, modern UI that users are familiar with
-- 💬 **Conversation History** - Locally stored chat history with easy navigation
-- 📋 **Copy Code Snippets** - One-click copying of code blocks and messages
-- 🔍 **Repository Filtering** - Query specific repositories or search across all
-- 📱 **Responsive Design** - Works perfectly on desktop and mobile devices
-- 🚀 **GitHub Pages Ready** - Static files ready for immediate deployment
-
-## Quick Setup
-
-1. **Clone or Download** these files to your GitHub repository
-2. **Update API Endpoint** in `script.js`:
-   ```javascript
-   this.apiEndpoint = 'YOUR_AWS_LAMBDA_ENDPOINT_HERE';
-   ```
-3. **Enable GitHub Pages** in your repository settings
-4. **Deploy** - Your chat assistant will be live!
-
-## File Structure
-
-```
-├── index.html          # Main HTML structure
-├── styles.css          # Complete styling (ChatGPT-inspired)
-├── script.js           # All functionality and API integration
-└── README.md           # This file
-```
+1. **Open the chat interface**: Open `index.html` in your web browser
+2. **Select a repository**: Choose from the dropdown menu
+3. **Start chatting**: Ask questions about your codebase!
 
 ## Configuration
 
-### API Integration
+### API Endpoint
 
-Replace the placeholder in `script.js`:
+The frontend is pre-configured to use the deployed API endpoint: `https://l34oleekr5.execute-api.us-east-1.amazonaws.com/prod`
 
+If you need to change the API endpoint, you have several options:
+
+#### Option 1: Modify config.js
+Edit the `API_ENDPOINT` constant in `config.js`:
 ```javascript
-// In the ChatAssistant constructor
-this.apiEndpoint = 'https://your-lambda-endpoint.amazonaws.com/your-function';
+const API_ENDPOINT = 'https://your-new-endpoint.execute-api.region.amazonaws.com/stage';
 ```
 
-### Repository Options
-
-The repository dropdown is automatically populated from your Pinecone database namespaces. Your AWS Lambda should provide a `/repositories` endpoint that returns:
-
-```json
-{
-    "repositories": ["modelearth/localsite", "modelearth/projects", "modelearth/team", "modelearth/cloud", "modelearth/realitystream"]
-}
+#### Option 2: Set via JavaScript Console
+In the browser console:
+```javascript
+setCodeChatApiEndpoint('https://your-new-endpoint.execute-api.region.amazonaws.com/stage');
 ```
 
-This should return all available Pinecone namespace names where your repository data is stored.
-
-## API Expected Format
-
-Your AWS Lambda function should have two endpoints:
-
-### 1. Main Chat Endpoint (POST)
-Expects:
-
-```json
-{
-    "question": "User's question here",
-    "repository": "pinecone-namespace-name" // null if querying all repos
-}
+#### Option 3: Set before loading scripts
+In your HTML, before loading the scripts:
+```html
+<script>
+    window.CODECHAT_API_ENDPOINT = 'https://your-new-endpoint.execute-api.region.amazonaws.com/stage';
+</script>
+<script src="config.js"></script>
+<script src="script.js"></script>
 ```
 
-And return:
+### Available Helper Functions
 
-```json
-{
-    "answer": "AI response here"
-}
-```
+Once the page is loaded, you can use these helper functions in the browser console:
 
-### 2. Repository List Endpoint (GET `/repositories`)
-Should return:
+- `getCodeChatApiEndpoint()` - Get the current API endpoint
+- `setCodeChatApiEndpoint(url)` - Update the API endpoint and reload repositories
 
-```json
-{
-    "repositories": ["namespace1", "namespace2", "namespace3"]
-}
-```
+## Features
 
-This endpoint should return all available Pinecone namespace names where your repository data is stored.
-## Features in Detail
+- **Modern Chat Interface**: ChatGPT-style UI with conversation history
+- **Repository Selection**: Query specific repositories or search across all
+- **Code Highlighting**: Automatic detection and formatting of code blocks
+- **Copy to Clipboard**: One-click copying of code snippets and responses
+- **Responsive Design**: Works on desktop and mobile devices
+- **Local Storage**: Conversation history is saved locally
+- **Error Handling**: Clear error messages with retry options
 
-### Conversation Management
-- Conversations are automatically saved to localStorage
-- Up to 50 recent conversations are kept
-- Each conversation gets a title from the first message
-- Easy switching between conversations
+## File Structure
 
-### Code Handling
-- Automatic detection of code blocks (```language)
-- Syntax highlighting placeholder (easily extensible)
-- Copy buttons for all code snippets
-- Inline code formatting
+- `index.html` - Main HTML structure
+- `script.js` - Core functionality and API integration
+- `styles.css` - Complete styling and responsive design
+- `config.js` - API endpoint configuration
+- `README.md` - This documentation
 
-### Responsive Design
-- Mobile-first approach
-- Collapsible sidebar on mobile
-- Touch-friendly interface
-- Optimized for all screen sizes
+## Troubleshooting
 
-## Customization
+### "API endpoint is not configured" Error
+If you see this error, the API endpoint needs to be configured. See the Configuration section above.
 
-### Styling
-All styles are in `styles.css`. Key CSS custom properties you might want to adjust:
+### "Could not load repositories" Error
+This usually means:
+1. The API endpoint is incorrect
+2. The backend is not deployed or accessible
+3. Network connectivity issues
 
-- Colors: Update the color scheme by modifying the background colors
-- Fonts: Change the font family in the body selector
-- Spacing: Adjust padding and margins throughout
+Try clicking the "Retry" button or check the browser console for more details. The API should be accessible at: https://l34oleekr5.execute-api.us-east-1.amazonaws.com/prod
 
-### Functionality
-Key areas in `script.js` you might want to customize:
+### Repository dropdown is empty
+If the repository dropdown only shows "All Repositories":
+1. Check that the backend `/repositories` endpoint is working
+2. Verify the API endpoint configuration
+3. Check browser console for error messages
 
-- `callAPI()` - Modify API call structure
-- `processCodeBlocks()` - Enhance code formatting
-- `addMessage()` - Customize message display
-- Repository list - Update in both HTML and any validation logic
+## Development
+
+### Local Testing
+Simply open `index.html` in a web browser. No build process required.
+
+### Deployment
+Upload all files to your web server or use GitHub Pages:
+1. Push files to your repository
+2. Enable GitHub Pages in repository settings
+3. Your chat interface will be available at `https://yourusername.github.io/yourrepo/chat/`
 
 ## Browser Support
 
@@ -128,33 +99,3 @@ Key areas in `script.js` you might want to customize:
 - Firefox 85+
 - Safari 14+
 - Mobile browsers (iOS Safari, Chrome Mobile)
-
-## GitHub Pages Deployment
-
-1. Push these files to your GitHub repository
-2. Go to Settings → Pages
-3. Select source: "Deploy from a branch"
-4. Choose "main" branch and "/ (root)" folder
-5. Your site will be available at `https://yourusername.github.io/yourrepo`
-
-## Local Development
-
-Simply open `index.html` in your browser, or use a local server:
-
-```bash
-# Python
-python -m http.server 8000
-
-# Node.js
-npx serve .
-
-# Or any other static file server
-```
-
-## Contributing
-
-Feel free to submit issues and enhancement requests!
-
-## License
-
-MIT License - feel free to use this in your projects.

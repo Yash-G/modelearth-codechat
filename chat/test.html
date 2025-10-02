@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeChat Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .status { 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 4px; 
+        }
+        .success { background-color: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; }
+        .testing { background-color: #d1ecf1; border: 1px solid #bee5eb; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; }
+        .test-result { 
+            margin: 10px 0; 
+            padding: 10px; 
+            border-radius: 4px; 
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>CodeChat System Test</h1>
+    
+    <div class="status testing">
+        <strong>Testing Status:</strong> Ready to test CodeChat functionality
+    </div>
+
+    <div>
+        <h3>Quick Tests:</h3>
+        <button onclick="testRepositories()">Test Repository Endpoint</button>
+        <button onclick="testQuery()">Test Query Endpoint</button>
+        <button onclick="testFullFlow()">Test Full Chat Flow</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const API_ENDPOINT = 'https://l34oleekr5.execute-api.us-east-1.amazonaws.com/prod';
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+
+        async function testRepositories() {
+            log('Testing repository endpoint...', 'testing');
+            try {
+                const response = await fetch(`${API_ENDPOINT}/repositories`);
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Repository endpoint works! Found ${data.length} repositories: ${JSON.stringify(data)}`, 'success');
+                } else {
+                    log(`❌ Repository endpoint failed: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Repository test error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testQuery() {
+            log('Testing query endpoint...', 'testing');
+            try {
+                const response = await fetch(`${API_ENDPOINT}/query`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        query: 'What is this repository about?',
+                        repo: 'sagar8080/codechat',
+                        conversation_id: 'test-' + Date.now()
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Query endpoint works! Response: ${data.content.substring(0, 100)}...`, 'success');
+                } else {
+                    log(`❌ Query endpoint failed: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Query test error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testFullFlow() {
+            log('Testing full chat flow...', 'testing');
+            
+            // Test 1: Load repositories
+            await testRepositories();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Test 2: Send query
+            await testQuery();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Test 3: Test CORS
+            log('Testing CORS headers...', 'testing');
+            try {
+                const response = await fetch(`${API_ENDPOINT}/repositories`, {
+                    method: 'GET',
+                    headers: { 'Origin': window.location.origin }
+                });
+                
+                const corsHeader = response.headers.get('Access-Control-Allow-Origin');
+                if (corsHeader === '*') {
+                    log('✅ CORS configured correctly', 'success');
+                } else {
+                    log(`⚠️ CORS may have issues: ${corsHeader}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ CORS test error: ${error.message}`, 'error');
+            }
+
+            log('🎉 Full flow test completed!', 'success');
+        }
+
+        // Auto-run basic test on load
+        window.addEventListener('load', () => {
+            log('CodeChat Test Page loaded. Click buttons above to test functionality.');
+        });
+    </script>
+</body>
+</html>

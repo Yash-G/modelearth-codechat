@@ -3,106 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Chat Assistant</title>
+    <title>CodeChat - AI-Powered Code Assistant</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Design Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Markdown and Syntax Highlighting Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.2/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
     <div class="app">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Code Chat</span>
+        <!-- Top Header with Repository and LLM Selection -->
+        <header class="top-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <button id="menuToggle" class="menu-toggle">
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <h1 class="app-title">
+                        <i class="material-icons">code</i>
+                        CodeChat
+                    </h1>
                 </div>
-                <button class="new-chat-btn" id="newChatBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    New chat
-                </button>
-            </div>
-            
-            <div class="chat-history" id="chatHistory">
-                <!-- Chat history will be populated here -->
-            </div>
-            
-            <div class="sidebar-footer">
-                <button class="clear-history-btn" id="clearHistoryBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                    Clear conversations
-                </button>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Header -->
-            <div class="header">
-                <button class="sidebar-toggle" id="sidebarToggle">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </button>
-                <h1>ModelEarth RAG</h1>
-            </div>
-
-            <!-- Repository Filter -->
-            <div class="repo-filter">
-                <label for="repoSelect">Repository:</label>
-                <select id="repoSelect">
-                    <option value="">All repositories</option>
-                    <!-- Options will be populated dynamically from Pinecone namespaces -->
-                </select>
-            </div>
-
-            <!-- Chat Container -->
-            <div class="chat-container" id="chatContainer">
-                <div class="welcome-message">
-                    <div class="welcome-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
+                
+                <div class="header-center">
+                    <!-- Repository Selection -->
+                    <div class="selection-group">
+                        <label for="repoSelect" class="selection-label">Repository</label>
+                        <div class="select-wrapper">
+                            <select id="repoSelect" class="material-select">
+                                <option value="">All Repositories</option>
+                                <!-- Repository options will be populated here -->
+                            </select>
+                            <i class="material-icons select-arrow">expand_more</i>
+                        </div>
                     </div>
-                    <h2>Welcome to Code Chat Assistant</h2>
-                    <p>Hit me up with your questions about the codebase! I can help you understand code, find specific implementations, or explain how different parts work together.</p>
+                    
+                    <!-- LLM Provider Selection -->
+                    <div class="selection-group">
+                        <label for="llmSelect" class="selection-label">AI Model</label>
+                        <div class="select-wrapper">
+                            <select id="llmSelect" class="material-select">
+                                <option value="bedrock-nova">Amazon Bedrock Nova</option>
+                                <option value="openai-gpt4">OpenAI GPT-4</option>
+                                <option value="claude">Anthropic Claude</option>
+                                <option value="gemini">Google Gemini</option>
+                                <option value="local">Local LLM</option>
+                            </select>
+                            <i class="material-icons select-arrow">expand_more</i>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Input Area -->
-            <div class="input-area">
-                <div class="input-container">
-                    <textarea 
-                        id="messageInput" 
-                        placeholder="Ask about the codebase..." 
-                        rows="1"
-                    ></textarea>
-                    <button id="sendBtn" class="send-btn" disabled>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                
+                <div class="header-right">
+                    <button id="newChatBtn" class="new-chat-btn">
+                        <i class="material-icons">add</i>
+                        <span>New Chat</span>
                     </button>
                 </div>
-                <div class="input-footer">
-                    <span>Code Chat Assistant can make mistakes. Consider checking important information.</span>
-                </div>
             </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="sidebar">
+                <div class="sidebar-content">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Recent Chats</h3>
+                        <div class="chat-history" id="chatHistory">
+                            <!-- Chat history will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-footer">
+                        <button id="clearHistoryBtn" class="clear-history-btn">
+                            <i class="material-icons">delete_sweep</i>
+                            Clear History
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Chat Area -->
+            <main class="main-content">
+                <!-- Chat Container -->
+                <div class="chat-container" id="chatContainer">
+                    <!-- Welcome screen -->
+                    <div class="welcome-screen" id="welcomeScreen">
+                        <div class="welcome-content">
+                            <div class="welcome-icon">
+                                <i class="material-icons">smart_toy</i>
+                            </div>
+                            <h2>Welcome to CodeChat</h2>
+                            <p>Your AI-powered code assistant. Ask questions about your repositories, get code explanations, or find specific functions and files.</p>
+                            
+                            <div class="example-prompts">
+                                <h3>Try asking:</h3>
+                                <div class="prompt-grid">
+                                    <button class="example-prompt" data-prompt="Find the main function in the backend">
+                                        <i class="material-icons">search</i>
+                                        Find the main function in the backend
+                                    </button>
+                                    <button class="example-prompt" data-prompt="How does the authentication system work?">
+                                        <i class="material-icons">security</i>
+                                        How does authentication work?
+                                    </button>
+                                    <button class="example-prompt" data-prompt="Show me examples of API endpoints">
+                                        <i class="material-icons">api</i>
+                                        Show me API endpoints
+                                    </button>
+                                    <button class="example-prompt" data-prompt="Explain the database schema">
+                                        <i class="material-icons">storage</i>
+                                        Explain the database schema
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat messages will be appended here -->
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-area">
+                    <div class="input-container">
+                        <div class="input-wrapper">
+                            <div class="input-field">
+                                <textarea
+                                    id="messageInput"
+                                    placeholder="Ask me anything about your codebase..."
+                                    rows="1"
+                                    maxlength="4000"
+                                ></textarea>
+                                
+                                <div class="input-actions">
+                                    <button id="attachBtn" class="action-btn" title="Attach file">
+                                        <i class="material-icons">attach_file</i>
+                                    </button>
+                                    
+                                    <button id="sendBtn" class="send-btn" disabled title="Send message">
+                                        <i class="material-icons">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="input-footer">
+                                <div class="character-count">
+                                    <span id="charCount">0</span>/4000
+                                </div>
+                                
+                                <div class="input-hint">
+                                    <span>Press <kbd>Enter</kbd> to send, <kbd>Shift + Enter</kbd> for new line</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

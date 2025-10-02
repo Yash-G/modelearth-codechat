@@ -1,0 +1,7 @@
+Chunks for example.cpp:
+
+Chunk 1:
+{'content': 'int main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}', 'metadata': {'file_path': '/Users/sagar/projects/codechat/tests/test_extension/input/example.cpp', 'file_extension': '.cpp', 'file_name': 'example.cpp', 'chunk_count': 1, 'chunk_index': 0, 'chunk_length': 75, 'token_count': 25}}
+
+--------------------------------------------------
+

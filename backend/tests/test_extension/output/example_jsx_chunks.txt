@@ -1,0 +1,7 @@
+Chunks for example.jsx:
+
+Chunk 1:
+{'content': "import React from 'react';\n\nfunction HelloWorld() {\n    return <div>Hello, World!</div>;\n}\n\nexport default HelloWorld;", 'metadata': {'file_path': '/Users/sagar/projects/codechat/tests/test_extension/input/example.jsx', 'file_extension': '.jsx', 'file_name': 'example.jsx', 'chunk_count': 1, 'chunk_index': 0, 'chunk_length': 118, 'token_count': 25}}
+
+--------------------------------------------------
+

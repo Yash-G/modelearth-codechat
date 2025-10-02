@@ -1,0 +1,17 @@
+Chunks for example.md:
+
+Chunk 1:
+{'content': '# Hello World\n\nThis is a test Markdown file.', 'metadata': {'file_path': '/Users/sagar/projects/codechat/tests/test_extension/input/example.md', 'file_extension': '.md', 'file_name': 'example.md', 'chunk_count': 3, 'chunk_index': 0, 'chunk_length': 44, 'token_count': 11}}
+
+--------------------------------------------------
+
+Chunk 2:
+{'content': '## Section 1\n\nSome content here.', 'metadata': {'file_path': '/Users/sagar/projects/codechat/tests/test_extension/input/example.md', 'file_extension': '.md', 'file_name': 'example.md', 'chunk_count': 3, 'chunk_index': 1, 'chunk_length': 32, 'token_count': 9}}
+
+--------------------------------------------------
+
+Chunk 3:
+{'content': '## Section 2\n\nMore content.\n\n- List item 1\n- List item 2', 'metadata': {'file_path': '/Users/sagar/projects/codechat/tests/test_extension/input/example.md', 'file_extension': '.md', 'file_name': 'example.md', 'chunk_count': 3, 'chunk_index': 2, 'chunk_length': 56, 'token_count': 19}}
+
+--------------------------------------------------
+

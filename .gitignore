@@ -1,2 +1,28 @@
 .env
 env
+
+# Environment files
+.env
+.env.local
+.env.*.local
+terraform.tfvars
+*.tfvars
+
+# AWS credentials
+.aws/
+aws-exports.js
+
+# API keys and secrets
+**/secrets/
+**/*secret*
+**/*key*
+!**/public_key*
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Lambda deployment packages
+*.zip

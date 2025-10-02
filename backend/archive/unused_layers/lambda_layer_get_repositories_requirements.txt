@@ -1,0 +1,2 @@
+# Minimal dependencies for get_repositories Lambda
+# This function only needs Python standard library - no external dependencies required!

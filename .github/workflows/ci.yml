@@ -1,0 +1,70 @@
+name: CodeChat CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+
+    - name: Run tests
+      run: |
+        pip install pytest
+        pytest backend/tests/
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.2.0
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      working-directory: ./backend/infra
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+      working-directory: ./backend/infra
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      working-directory: ./backend/infra
+      continue-on-error: true
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
+      working-directory: ./backend/infra
+      env:
+        TF_VAR_github_webhook_secret: ${{ secrets.GITHUB_WEBHOOK_SECRET }}
+        TF_VAR_openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+        TF_VAR_pinecone_api_key: ${{ secrets.PINECONE_API_KEY }}
