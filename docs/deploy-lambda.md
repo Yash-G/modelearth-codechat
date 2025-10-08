@@ -5,6 +5,8 @@ This guide uses a single, cross-platform Python script that leverages the AWS SD
 Prerequisites
 - AWS account and credentials configured (env vars, ~/.aws/credentials, or SSO)
 - Docker installed and running
+  - Windows/macOS: Install Docker Desktop (see: https://docs.docker.com/desktop/)
+  - Linux: Install Docker Engine (see: https://docs.docker.com/engine/install/)
 - Python 3.9+
 - Install: `pip install boto3 python-dotenv` (dotenv is only needed if you use `--env-file`)
 
