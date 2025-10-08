@@ -4,6 +4,9 @@ This guide uses a single, cross-platform Python script that leverages the AWS SD
 
 Prerequisites
 - AWS account and credentials configured (env vars, ~/.aws/credentials, or SSO)
+  - Install AWS CLI v2: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+  - Configure credentials: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
+  - Your walkthrough (keys via Console): https://chatgpt.com/share/68e69984-770c-800d-a245-b925c3866276
 - Docker installed and running
   - Windows/macOS: Install Docker Desktop (see: https://docs.docker.com/desktop/)
   - Linux: Install Docker Engine (see: https://docs.docker.com/engine/install/)
@@ -23,7 +26,7 @@ Recommended names (defaults)
 Secrets options
 - `--use-env` reads `OPENAI_API_KEY`, `PINECONE_API_KEY`, `GOOGLE_API_KEY` from your shell environment.
 - `--env-file` reads the same keys from a `.env` file (e.g., `codechat/.env`).
-- With no flags, the script auto-detects secrets in this order: `codechat/.env` → `.env` → current shell env. If none found, it leaves Lambda env unchanged.
+- With no flags, the script auto-detects secrets in this order: `codechat/.env` -> `.env` -> current shell env. If none found, it leaves Lambda env unchanged.
 
 Profile detection
 - Optional `--profile` to target a specific AWS profile.
