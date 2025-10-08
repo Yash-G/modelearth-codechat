@@ -20,7 +20,7 @@ pinecone_client = Pinecone(api_key=PINECONE_API_KEY)
 # Pinecone index config
 INDEX_NAME = "model-earth-jam-stack"
 index = pinecone_client.Index(INDEX_NAME)
-gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+gemini_model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
 # Get all namespaces once
 def get_all_namespaces():
@@ -120,3 +120,4 @@ if __name__ == "__main__":
         print(f"\n🔍 Question: {q}")
         answer = query_all_namespaces(q, top_k=10, per_ns_k=3)  # 3 per ns × 10 ns = ~30 results to sort
         print(f"✅ Answer:\n{answer}")
+
