@@ -204,6 +204,8 @@ CORS is configured at the edge (Function URL or API Gateway). The handler does n
 
 Required environment variables: `OPENAI_API_KEY`, `PINECONE_API_KEY`, `GOOGLE_API_KEY`.
 
+For deployment instructions, see docs/deploy-lambda.md.
+
 ## VectorDB Sync
 
 ### Implementation & Usage
