@@ -110,6 +110,28 @@ def lambda_handler(event, context):
     logger.info(f"Lambda function invoked with event: {json.dumps(event, default=str)}")
     
     try:
+        # Minimal routing for Function URL / API Gateway
+        # Support GET /repositories for listing Pinecone namespaces (no inline CORS headers)
+        try:
+            rc = event.get('requestContext') if isinstance(event, dict) else None
+            http = rc.get('http') if isinstance(rc, dict) else None
+            method = (http.get('method') if isinstance(http, dict) else None) or event.get('httpMethod') if isinstance(event, dict) else None
+            path = (event.get('rawPath') if isinstance(event, dict) else None) or (event.get('path') if isinstance(event, dict) else None)
+        except Exception:
+            method, path = None, None
+
+        if method == 'GET' and path and path.rstrip('/') == '/repositories':
+            try:
+                repos = get_all_namespaces()
+            except Exception as e:
+                logger.error(f"Failed to list namespaces: {e}")
+                repos = []
+            return {
+                'statusCode': 200,
+                'headers': { 'Content-Type': 'application/json' },
+                'body': json.dumps({'repositories': repos}, ensure_ascii=False)
+            }
+
         # Parse the incoming request
         body = {}
         
