@@ -64,12 +64,11 @@ These output repos may be pulled into local webroots during data processing, but
 ## RAG Pipeline Documentation
 
 The RAG pipeline processes files from a local repository (e.g., `modelearth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with 
-
 **OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).  Get $5 in credits, you won't need them all.
 
 Users will query via the [chat frontend](chat), where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries 
 
-**Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
+**Gemini (`gemini-2.5-flash-lite`)** for answers, and returns results to the frontend.
 
 **GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
 
@@ -143,7 +142,7 @@ This error occurs when deploying to AWS Lambda because `pydantic` (required by t
 ## Projects
 
 - Chunk, Embed, Store in VectorDB - **Webroot and submodules** (listed above and in [webroot/submodules.jsx](https://github.com/modelearth/webroot))
-- Write AWS Lambda Backend (embed queries, fetch from Pinecone, and query Gemini)
+- AWS Lambda Backend (embeds queries, fetches from Pinecone, and queries Gemini)
 - Sync VectorDB with PRs (GitHub Actions on PR merges)
 
 ---
@@ -184,18 +183,26 @@ This error occurs when deploying to AWS Lambda because `pydantic` (required by t
 
 Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
 
+- Configure the API endpoint in `codechat/chat/script.js` (`API_BASE`) to point to your deployed backend (Lambda Function URL or API Gateway). Keep placeholders in source; do not commit secrets or private URLs.
+- The chat UI populates the repository dropdown via `GET /repositories` and strips the `ModelEarth_` prefix in labels only (namespace remains unchanged in requests).
+
 
 ## Backend
 
-Write a Lambda function in Python (`lambda_function.py`) using the AWS free tier (1M requests/month) to handle user queries for the RAG pipeline. The logic should:
+The backend is an AWS Lambda function (Python 3.11) implemented in `lambda_function.py`. It:
 
-1. Embed the query with OpenAI’s `text-embedding-3-small` using `OPENAI_API_KEY` from environment variables  
-2. Query Pinecone’s `repo-chunks` for top-5 chunks or the matching percentage  
-3. Send context and query to **Gemini (`gemini-1.5-flash`)** using `GOOGLE_API_KEY`  
-4. Return the answer to the frontend
+1. Embeds the question with OpenAI `text-embedding-3-small` using `OPENAI_API_KEY`.
+2. Queries the Pinecone index for the most relevant chunks (metadata includes `repo_name` and `file_path`).
+3. Sends the question and retrieved context to Gemini (`gemini-2.5-flash-lite`) using `GOOGLE_API_KEY`.
+4. Returns the answer to the frontend.
 
-Deploy in AWS Lambda with `PINECONE_API_KEY` in environment variables.
+### API
+- `POST /` - body: { "question": "...", "repository": "<namespace>|null" } returns { "answer": "...", ... }
+- `GET /repositories` - returns { "repositories": ["namespace1", ...] } (Pinecone namespaces)
 
+CORS is configured at the edge (Function URL or API Gateway). The handler does not set `Access-Control-Allow-*` headers.
+
+Required environment variables: `OPENAI_API_KEY`, `PINECONE_API_KEY`, `GOOGLE_API_KEY`.
 
 ## VectorDB Sync
 
