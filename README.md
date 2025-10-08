@@ -183,7 +183,7 @@ This error occurs when deploying to AWS Lambda because `pydantic` (required by t
 
 Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
 
-- Configure the API endpoint in `codechat/chat/script.js` (`API_BASE`) to point to your deployed backend (Lambda Function URL or API Gateway). Keep placeholders in source; do not commit secrets or private URLs.
+- Configure the API endpoint in `chat/script.js` (`this.apiEndpoint`) to point to your deployed backend (Lambda Function URL or API Gateway). Keep placeholders in source; do not commit secrets or private URLs.
 - The chat UI populates the repository dropdown via `GET /repositories` and strips the `ModelEarth_` prefix in labels only (namespace remains unchanged in requests).
 
 
