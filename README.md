@@ -211,12 +211,17 @@ What it does
 - Delete: remove vectors filtered by `repo_name` + `file_path`.
 - Embeddings are content-only; `file_path` and other fields live in metadata so updates are precise and idempotent.
 
-Secrets (set in webroot repo → Settings → Actions → Secrets and variables)
-- `PINECONE_API_KEY` (required)
-- `OPENAI_API_KEY` (required)
-- Optional serverless: `PINECONE_CLOUD=aws`, `PINECONE_REGION=us-east-1`
-- Optional classic: `PINECONE_ENV=us-west1-gcp`
-- Optional index: `PINECONE_INDEX=repo-chunks` (default)
+Secrets for VectorDB Sync (GitHub Actions)
+1) In the webroot repo on GitHub, open Settings (top menu).
+2) In the left sidebar under Security, select Secrets and variables > Actions.
+3) Under Repository secrets, click New repository secret and add:
+   - `PINECONE_API_KEY` (required)
+   - `OPENAI_API_KEY` (required)
+   - Optional serverless: `PINECONE_CLOUD=aws`, `PINECONE_REGION=us-east-1`
+   - Optional classic: `PINECONE_ENV=us-west1-gcp`
+   - Optional index: `PINECONE_INDEX=repo-chunks` (default)
+4) (Optional) If you use Environments, click Manage environment secrets to scope secrets to an environment and add the same keys there.
+5) Variables tab is for non‑secret values; do not place API keys there.
 
 Local testing (real APIs; cleans up vectors)
 - Ensure `codechat/.env` contains the keys above.
