@@ -9,7 +9,7 @@
  */
 
 // Default API endpoint from Terraform deployment
-const API_ENDPOINT = 'https://sq7sbfvyie.execute-api.us-east-1.amazonaws.com/prod';
+const API_ENDPOINT = 'enter-API-gateway-endpoint-here';
 
 // Set the global configuration if not already set
 if (!window.CODECHAT_API_ENDPOINT) {
