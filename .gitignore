@@ -26,3 +26,5 @@ aws-exports.js
 
 # Lambda deployment packages
 *.zip
+
+archive/

@@ -236,21 +236,6 @@ python -m http.server 8000
 
 ---
 
-## 🧪 **Test 9: Run Official Test Suite**
-
-Run the test suite:
-
-```bash
-# Run all tests
-python -m pytest tests/ -v
-
-# Run specific test files
-python -m pytest tests/unit/test_chunkers.py -v
-python -m pytest tests/integration/test_ingestion.py -v
-```
-
----
-
 ## 🔍 **Debugging Tips**
 
 ### If imports fail:

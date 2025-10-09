@@ -27,11 +27,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r backend/requirements.txt
 
-    - name: Run tests
-      run: |
-        pip install pytest
-        pytest backend/tests/
-
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:

@@ -1,7 +1,0 @@
-Chunks for example.ts:
-
-Chunk 1:
-{'content': 'const helloWorld = () => {\n    console.log("Hello, World!");\n};\n\nclass MyClass {\n    constructor() {\n        this.value = 42;\n    }\n\n    greet(): string {\n        return "Hello from TypeScript!";\n    }\n}', 'metadata': {'file_path': '/Users/sagar/projects/codechat/tests/test_extension/input/example.ts', 'file_extension': '.ts', 'file_name': 'example.ts', 'chunk_count': 1, 'chunk_index': 0, 'chunk_length': 203, 'token_count': 47}}
-
---------------------------------------------------
-

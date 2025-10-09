@@ -1,4 +1,0 @@
-# Lightweight dependencies for ingestion_webhook Lambda
-# Only needs boto3 for SQS and basic request handling
-
-boto3>=1.28.0
