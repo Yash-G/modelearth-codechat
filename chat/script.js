@@ -1,4 +1,4 @@
-class ChatAssistant {
+﻿class ChatAssistant {
     constructor() {
         this.conversations = JSON.parse(localStorage.getItem('chatConversations') || '[]');
         this.currentConversationId = null;
@@ -372,7 +372,8 @@ class ChatAssistant {
         this.availableRepositories.forEach(repo => {
             const option = document.createElement('option');
             option.value = repo;
-            option.textContent = repo;
+            // Display without the "ModelEarth_" prefix if present
+            option.textContent = repo.replace(/^ModelEarth_/, '');
             this.repoSelect.appendChild(option);
         });
     }
@@ -464,3 +465,4 @@ let chatAssistant;
 document.addEventListener('DOMContentLoaded', () => {
     chatAssistant = new ChatAssistant();
 });
+

@@ -3,6 +3,7 @@ import os
 from pinecone import Pinecone
 from openai import OpenAI
 import google.generativeai as genai
+import logging
 
 # Initialize clients (moved outside handler for better performance)
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -13,10 +14,13 @@ openai_client = OpenAI(api_key=OPENAI_API_KEY)
 genai.configure(api_key=GOOGLE_API_KEY)
 pinecone_client = Pinecone(api_key=PINECONE_API_KEY)
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 # Pinecone index config
 INDEX_NAME = "model-earth-jam-stack"
 index = pinecone_client.Index(INDEX_NAME)
-gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+gemini_model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
 def get_all_namespaces():
     stats = index.describe_index_stats()
@@ -106,6 +110,28 @@ def lambda_handler(event, context):
     logger.info(f"Lambda function invoked with event: {json.dumps(event, default=str)}")
     
     try:
+        # Minimal routing for Function URL / API Gateway
+        # Support GET /repositories for listing Pinecone namespaces (no inline CORS headers)
+        try:
+            rc = event.get('requestContext') if isinstance(event, dict) else None
+            http = rc.get('http') if isinstance(rc, dict) else None
+            method = (http.get('method') if isinstance(http, dict) else None) or event.get('httpMethod') if isinstance(event, dict) else None
+            path = (event.get('rawPath') if isinstance(event, dict) else None) or (event.get('path') if isinstance(event, dict) else None)
+        except Exception:
+            method, path = None, None
+
+        if method == 'GET' and path and path.rstrip('/') == '/repositories':
+            try:
+                repos = get_all_namespaces()
+            except Exception as e:
+                logger.error(f"Failed to list namespaces: {e}")
+                repos = []
+            return {
+                'statusCode': 200,
+                'headers': { 'Content-Type': 'application/json' },
+                'body': json.dumps({'repositories': repos}, ensure_ascii=False)
+            }
+
         # Parse the incoming request
         body = {}
         
@@ -152,10 +178,7 @@ def lambda_handler(event, context):
             return {
                 'statusCode': 400,
                 'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+                    'Content-Type': 'application/json'
                 },
                 'body': json.dumps({
                     'error': 'Question is required and cannot be empty',
@@ -181,10 +204,7 @@ def lambda_handler(event, context):
         response = {
             'statusCode': 200,
             'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+                'Content-Type': 'application/json'
             },
             'body': json.dumps({
                 'question': question,
@@ -206,8 +226,7 @@ def lambda_handler(event, context):
         return {
             'statusCode': 400,
             'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             },
             'body': json.dumps({
                 'error': 'Invalid JSON format in request body',
@@ -220,8 +239,7 @@ def lambda_handler(event, context):
         return {
             'statusCode': 500,
             'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             },
             'body': json.dumps({
                 'error': 'Internal server error occurred',
