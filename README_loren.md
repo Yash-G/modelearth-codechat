@@ -64,27 +64,36 @@ These output repos may be pulled into local webroots during data processing, but
 ## RAG Pipeline Documentation
 
 The RAG pipeline processes files from a local repository (e.g., `modelearth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with 
-
 **OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).  Get $5 in credits, you won't need them all.
 
 Users will query via the [chat frontend](chat), where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries 
 
-**Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
+**Gemini (`gemini-2.5-flash-lite`)** for answers, and returns results to the frontend.
 
 **GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
 
 Add your 3 keys to .env and run to test the RAG process (Mac version):
-Claude will install: python-dotenv pinecone-client openai google-generativeai
+
+### Installing Dependencies
+
+The `requirements.txt` file automatically installs these core packages and their dependencies:
+- `python-dotenv` - Environment variable management
+- `pinecone` - Vector database client  
+- `openai` - OpenAI API client for embeddings
+- `google-generativeai` - Gemini API client for responses
+- Additional core dependencies: `certifi`, `typing-extensions`, `urllib3`, `requests`, `pydantic`, `anyio`
 
 Windows PC
 
 	python -m venv env
 	env\Scripts\activate.bat
+	pip install -r requirements.txt
 
 Mac/Linux
 
 	python3 -m venv env
 	source env/bin/activate
+	pip install -r requirements.txt
 
 Start
 
@@ -94,12 +103,46 @@ Or start Claude
 
 	npx @anthropic-ai/claude-code
 
+### AWS Lambda Deployment Issues
+
+**Error: `Unable to import module 'lambda_function': no module named 'pydantic_core._pydantic_core'`**
+
+This error occurs when deploying to AWS Lambda because `pydantic` (required by the OpenAI client) has compiled dependencies that may not be compatible with Lambda's runtime environment.
+
+**Solutions:**
+
+1. **Use Lambda Layers** (Recommended):
+   ```bash
+   # Create a layer with dependencies
+   mkdir python
+   pip install -r requirements.txt -t python/
+   zip -r dependencies-layer.zip python/
+   # Upload as Lambda Layer and attach to your function
+   ```
+
+2. **Platform-specific Installation**:
+   ```bash
+   # Install for Linux x86_64 (Lambda runtime)
+   pip install -r requirements.txt --platform linux_x86_64 --only-binary=:all: -t package/
+   ```
+
+3. **Alternative: Use Docker for Lambda**:
+   ```dockerfile
+   FROM public.ecr.aws/lambda/python:3.11
+   COPY requirements.txt .
+   RUN pip install -r requirements.txt
+   COPY lambda_function.py .
+   CMD ["lambda_function.lambda_handler"]
+   ```
+
+4. **Lightweight Alternative**: Replace `pydantic`-heavy clients with `requests` for direct API calls to reduce dependency complexity.
+
 
 
 ## Projects
 
 - Chunk, Embed, Store in VectorDB - **Webroot and submodules** (listed above and in [webroot/submodules.jsx](https://github.com/modelearth/webroot))
-- Write AWS Lambda Backend (embed queries, fetch from Pinecone, and query Gemini)
+- AWS Lambda Backend (embeds queries, fetches from Pinecone, and queries Gemini)
 - Sync VectorDB with PRs (GitHub Actions on PR merges)
 
 ---
@@ -140,27 +183,60 @@ Or start Claude
 
 Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
 
+- Configure the API endpoint in `chat/script.js` (`this.apiEndpoint`) to point to your deployed backend (Lambda Function URL or API Gateway). Keep placeholders in source; do not commit secrets or private URLs.
+- The chat UI populates the repository dropdown via `GET /repositories` and strips the `ModelEarth_` prefix in labels only (namespace remains unchanged in requests).
+
 
 ## Backend
 
-Write a Lambda function in Python (`lambda_function.py`) using the AWS free tier (1M requests/month) to handle user queries for the RAG pipeline. The logic should:
+The backend is an AWS Lambda function (Python 3.11) implemented in `lambda_function.py`. It:
 
-1. Embed the query with OpenAI’s `text-embedding-3-small` using `OPENAI_API_KEY` from environment variables  
-2. Query Pinecone’s `repo-chunks` for top-5 chunks or the matching percentage  
-3. Send context and query to **Gemini (`gemini-1.5-flash`)** using `GOOGLE_API_KEY`  
-4. Return the answer to the frontend
+1. Embeds the question with OpenAI `text-embedding-3-small` using `OPENAI_API_KEY`.
+2. Queries the Pinecone index for the most relevant chunks (metadata includes `repo_name` and `file_path`).
+3. Sends the question and retrieved context to Gemini (`gemini-2.5-flash-lite`) using `GOOGLE_API_KEY`.
+4. Returns the answer to the frontend.
 
-Deploy in AWS Lambda with `PINECONE_API_KEY` in environment variables.
+### API
+- `POST /` - body: { "question": "...", "repository": "<namespace>|null" } returns { "answer": "...", ... }
+- `GET /repositories` - returns { "repositories": ["namespace1", ...] } (Pinecone namespaces)
 
+CORS is configured at the edge (Function URL or API Gateway). The handler does not set `Access-Control-Allow-*` headers.
+
+Required environment variables: `OPENAI_API_KEY`, `PINECONE_API_KEY`, `GOOGLE_API_KEY`.
+
+For deployment instructions, see docs/deploy-lambda.md.
 
 ## VectorDB Sync
 
-GitHub sync — develop a solution for how we can sync the PR to the vector DB.
+### Implementation & Usage
 
-A good solution is to have the `file_path` in the metadata, right?  
+- Script: `codechat/vectordb_sync.py` (commit-range replay; supports A/M/D + rename)
+- Workflow: `webroot/.github/workflows/vector_sync.yml` (runs on merges/pushes to `main`)
 
-Whenever a PR is merged, we replace all vectors related to that file with the updated file vectors.
+What it does
+- Replays `BASE..HEAD` and expands changes into file-level A/M/D across the superproject and changed submodules.
+- Handles renames by deleting the old path and indexing the new path (R → D old + M new).
+- Add/Modify: pre-delete vectors for that `file_path`, then chunk → embed (OpenAI `text-embedding-3-small`) → upsert.
+- Delete: remove vectors filtered by `repo_name` + `file_path`.
+- Embeddings are content-only; `file_path` and other fields live in metadata so updates are precise and idempotent.
 
-We do the update with a GitHub Action in our webroot ([vector_sync.yml](https://github.com/ModelEarth/webroot/blob/main/.github/workflows/vector_sync.yml)), so chunking should be lightweight.
+Secrets for VectorDB Sync (GitHub Actions)
+1) In the webroot repo on GitHub, open Settings (top menu).
+2) In the left sidebar under Security, select Secrets and variables > Actions.
+3) Under Repository secrets, click New repository secret and add:
+   - `PINECONE_API_KEY` (required)
+   - `OPENAI_API_KEY` (required)
+   - Optional serverless: `PINECONE_CLOUD=aws`, `PINECONE_REGION=us-east-1`
+   - Optional classic: `PINECONE_ENV=us-west1-gcp`
+   - Optional index: `PINECONE_INDEX=repo-chunks` (default)
+4) (Optional) If you use Environments, click Manage environment secrets to scope secrets to an environment and add the same keys there.
+5) Variables tab is for non‑secret values; do not place API keys there.
 
-For the initial load, we used Tree-sitter. But try to figure out that if the PR is a Python file, then we only build Tree-sitter Python and chunk it.  Embedding would obviously be OpenAI’s small model since it's lightweight.
+Local testing (real APIs; cleans up vectors)
+- Ensure `codechat/.env` contains the keys above.
+- Run: `python codechat/test_vectordb_sync.py`
+
+Action logs and errors
+- Actions → VectorDB Sync → open the run; expand the sync step to view logs.
+- If errors occur, the workflow uploads `vector-sync-errors` (artifact with `codechat/.vector_sync_errors.jsonl`) and adds a summary to the job output.
+
