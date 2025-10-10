@@ -1,0 +1,135 @@
+repositories:
+- name: modelearth/webroot
+  url: https://github.com/modelearth/webroot.git
+  description: Main community website and web resources
+  namespace: webroot
+  tracked: false
+  processed: false
+- name: modelearth/localsite
+  url: https://github.com/modelearth/localsite.git
+  description: Local development framework and tools
+  namespace: localsite
+  tracked: false
+  processed: false
+- name: modelearth/io
+  url: https://github.com/modelearth/io.git
+  description: Input/output processing and data flow tools
+  namespace: io
+  tracked: false
+  processed: false
+- name: modelearth/cloud
+  url: https://github.com/modelearth/cloud.git
+  description: Cloud infrastructure and deployment tools
+  namespace: cloud
+  tracked: false
+  processed: false
+- name: modelearth/codechat
+  url: https://github.com/modelearth/codechat.git
+  description: AI-powered code chat interface
+  namespace: codechat
+  tracked: true
+  processed: true
+- name: modelearth/community-forecasting
+  url: https://github.com/modelearth/community-forecasting.git
+  description: Community-driven forecasting tools and models
+  namespace: community-forecasting
+  tracked: false
+  processed: false
+- name: modelearth/comparison
+  url: https://github.com/modelearth/comparison.git
+  description: Data comparison and analysis tools
+  namespace: comparison
+  tracked: false
+  processed: false
+- name: modelearth/exiobase
+  url: https://github.com/modelearth/exiobase.git
+  description: EXIOBASE integration and processing
+  namespace: exiobase
+  tracked: false
+  processed: false
+- name: modelearth/feed
+  url: https://github.com/modelearth/feed.git
+  description: Data feed processing and management
+  namespace: feed
+  tracked: false
+  processed: false
+- name: modelearth/home
+  url: https://github.com/modelearth/home.git
+  description: Home page and main navigation
+  namespace: home
+  tracked: false
+  processed: false
+- name: modelearth/products
+  url: https://github.com/modelearth/products.git
+  description: Product data and catalog management
+  namespace: products
+  tracked: false
+  processed: false
+- name: modelearth/profile
+  url: https://github.com/modelearth/profile.git
+  description: User profiles and account management
+  namespace: profile
+  tracked: false
+  processed: false
+- name: modelearth/projects
+  url: https://github.com/modelearth/projects.git
+  description: Project management and tracking
+  namespace: projects
+  tracked: false
+  processed: false
+- name: modelearth/realitystream
+  url: https://github.com/modelearth/realitystream.git
+  description: Real-time data streaming and visualization
+  namespace: realitystream
+  tracked: false
+  processed: false
+- name: modelearth/reports
+  url: https://github.com/modelearth/reports.git
+  description: Reporting and analytics tools
+  namespace: reports
+  tracked: false
+  processed: false
+- name: modelearth/swiper
+  url: https://github.com/modelearth/swiper.git
+  description: Interactive UI components and navigation
+  namespace: swiper
+  tracked: false
+  processed: false
+- name: modelearth/team
+  url: https://github.com/modelearth/team.git
+  description: Team management and collaboration tools
+  namespace: team
+  tracked: false
+  processed: false
+- name: modelearth/apps
+  url: https://github.com/modelearth/apps.git
+  description: Web applications and tools
+  namespace: apps
+  tracked: false
+  processed: false
+- name: modelearth/data-commons
+  url: https://github.com/modelearth/data-commons.git
+  description: Data commons and shared datasets
+  namespace: data-commons
+  tracked: false
+  processed: false
+- name: modelearth/machine-learning
+  url: https://github.com/modelearth/machine-learning.git
+  description: Machine learning models and algorithms
+  namespace: machine-learning
+  tracked: false
+  processed: false
+- name: modelearth/earthscape
+  url: https://github.com/modelearth/earthscape.git
+  description: Environmental data visualization
+  namespace: earthscape
+  tracked: false
+  processed: false
+processing:
+  default_namespace: codechat-main
+  max_files_per_repo: 100
+  chunk_size: 1000
+  overlap: 200
+  batch_size: 100
+pinecone:
+  index: model-earth-jam-stack

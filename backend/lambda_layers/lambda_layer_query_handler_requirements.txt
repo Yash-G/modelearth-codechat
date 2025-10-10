@@ -1,0 +1,7 @@
+# Dependencies for query_handler Lambda - RAG functionality
+# This is the heavy one but focused only on query processing
+
+pinecone>=7.3.0
+openai>=1.98.0
+google-generativeai>=0.8.5
+PyYAML>=6.0
