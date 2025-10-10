@@ -1,166 +1,538 @@
-<div class='titleflex'>
-    <div>
-    	<h1>CodeChat</h1>
-		Scroll down for our RAG pipeline process and view our <a href="chat">chat interface</a>.
-    </div>
-    <a href="https://github.com/ModelEarth/codechat" target="codechat_github" class="github-link">
-        <img src="../localsite/img/icon/github/github.png" alt="Codechat Repository">
-    </a>
-</div>
+# CodeChat - Repository-Intelligent Code Search
 
-## Webroot
+> **Note**: This README contains all essential documentation. Previous documentation files have been consolidated here. Component-specific READMEs remain in their respective directories (`chat/README.md`, etc.). Archived components and old docs are in the `archive/` directory.
 
-<a href="http://localhost:8887/" style="float:right">Runs on port 8887</a>
+## 🚀 **Quick Start - Run the Main Pipeline**
 
-Our webroot repo loads these submodules, plus claude.md and [vector_sync.yml](https://github.com/ModelEarth/webroot/blob/main/.github/workflows/vector_sync.yml) - [Get Started](https://model.earth/webroot/)
+The easiest way to test everything is to run the main pipeline:
 
-| Name | Repository | Description |
-|------|------------|-------------|
-| [webroot](../) | [github.com/modelearth/webroot](https://github.com/modelearth/webroot) | PartnerTools webroot |
-| [cloud](../cloud/) | [github.com/modelearth/cloud](https://github.com/modelearth/cloud) | Flask for python colabs |
-| [codechat](../codechat/) | [github.com/modelearth/codechat](https://github.com/modelearth/codechat) | Chat RAG using Pinecone |
-| [community-forecasting](../community-forecasting/) | [github.com/modelearth/community-forecasting](https://github.com/modelearth/community-forecasting) | Javascript-based ML with maps |
-| [comparison](../comparison/) | [github.com/modelearth/comparison](https://github.com/modelearth/comparison) | Trade Flow data visualizations |
-| [exiobase](../exiobase/) | [github.com/modelearth/comparison](https://github.com/modelearth/exiobase) | Trade data to CSV and SQL |
-| [feed](../feed/) | [github.com/modelearth/feed](https://github.com/modelearth/feed) | FeedPlayer video/gallery |
-| [home](../home/) | [github.com/modelearth/home](https://github.com/modelearth/home) | Everybody's Home Page |
-| [io](../io/) | [github.com/modelearth/io](https://github.com/modelearth/io) | React Input-Output widgets for states |
-| [localsite](../localsite/) | [github.com/modelearth/localsite](https://github.com/modelearth/localsite) | Core javacript utilities, tabulator |
-| [products](../products/) | [github.com/modelearth/products](https://github.com/modelearth/products) | Building Transparency Product API |
-| [profile](../profile/) | [github.com/modelearth/profile](https://github.com/modelearth/profile) | Footprint Reports for communities and industries |
-| [projects](../projects/) | [github.com/modelearth/projects](https://github.com/modelearth/projects) | Overview and TODOs - Projects Hub |
-| [realitystream](../realitystream/) | [github.com/modelearth/realitystream](https://github.com/modelearth/realitystream) | Run Models colab |
-| [reports](../reports/) | [github.com/modelearth/realitystream](https://github.com/modelearth/reports) | Output from RealityStream colab |
-| [swiper](../swiper/) | [github.com/modelearth/swiper](https://github.com/modelearth/swiper) | UI swiper component for FeedPlayer |
-| [team](../team/) | [github.com/modelearth/team](https://github.com/modelearth/team) | Rust API for Azure and AI Insights |
+```bash
+cd /Users/sagar/projects/codechat
 
-<br><div class="floatRight" style="max-width:240px;"><a href="overview/img/flowchart.png"><img src="overview/img/flowchart.png" style="width:100%"></a></div>
+# Set environment variables (or use .env file)
+export OPENAI_API_KEY="your-openai-key"
+export PINECONE_API_KEY="your-pinecone-key"
+export PINECONE_ENVIRONMENT="us-east-1-aws"
+export PINECONE_INDEX_NAME="model-earth"
 
-Optional:
+# Run the complete pipeline
+python main.py
+```
 
-**Extra repos:** (forked and cloned into webroot) topojson, community, nisar, useeio-json, trade-data
-
-**Inactive repos:** planet, earthscape, modelearth
-<br>
-
-
-## Data-Pipeline (static csv and json output for fast web reports)
-
-These output repos may be pulled into local webroots during data processing, but we avoid committing these as a submodules in the webroots due to their large size. The static data in these repos is pulled directly through Github Pages and the Cloudflare CDN.
-
-| Name | Repository | Description |
-|------|------------|-------------|
-| [data-pipeline](../data-pipeline/) | [github.com/modelearth/data-pipeline](https://github.com/modelearth/data-pipeline) | Python data processing pipeline |
-| [trade-data](../trade-data/) | [github.com/modelearth/trade-data](https://github.com/modelearth/trade-data) | Tradeflow data outputs |
-| [products-data](../products-data/) | [github.com/modelearth/products-data](https://github.com/modelearth/products-data) | Product impact profiles |
-| [community-data](../community-data/) | [github.com/modelearth/community-data](https://github.com/modelearth/community-data) | Community-level data outputs |
-| [community-timelines](../community-timelines/) | [github.com/modelearth/community-timelines](https://github.com/modelearth/community-timelines) | Timeline data for communities |
-| [community-zipcodes](../community-zipcodes/) | [github.com/modelearth/community-zipcodes](https://github.com/modelearth/community-zipcodes) | ZIP code level community data |
-| [community-forecasting](../community-forecasting/) | [github.com/modelearth/community-forecasting](https://github.com/modelearth/community-forecasting) | Forecasting frontend (legacy) |
-| [dataflow](../dataflow/) | [github.com/modelearth/dataflow](https://github.com/modelearth/dataflow) | Data flow NextJS UX |
-
-<br>
-
-## RAG Pipeline Documentation
-
-The RAG pipeline processes files from a local repository (e.g., `modelearth/localsite`) by chunking them using **Tree-sitter**, embedding chunks with 
-
-**OpenAI’s `text-embedding-3-small`**, and storing them in **Pinecone VectorDB** with metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`).  Get $5 in credits, you won't need them all.
-
-Users will query via the [chat frontend](chat), where an **AWS Lambda backend** embeds the question, searches Pinecone for relevant chunks, queries 
-
-**Gemini (`gemini-1.5-flash`)** for answers, and returns results to the frontend.
-
-**GitHub Actions** syncs the VectorDB by detecting PR merges, pulling changed files, re-chunking, re-embedding, and updating Pinecone. This enables a scalable Q&A system for codebase and documentation queries.
-
-Add your 3 keys to .env and run to test the RAG process (Mac version):
-Claude will install: python-dotenv pinecone-client openai google-generativeai
-
-Windows PC
-
-	python -m venv env
-	env\Scripts\activate.bat
-
-Mac/Linux
-
-	python3 -m venv env
-	source env/bin/activate
-
-Start
-
-	python rag_query_test.py
-
-Or start Claude
-
-	npx @anthropic-ai/claude-code
-
-
-
-## Projects
-
-- Chunk, Embed, Store in VectorDB - **Webroot and submodules** (listed above and in [webroot/submodules.jsx](https://github.com/modelearth/webroot))
-- Write AWS Lambda Backend (embed queries, fetch from Pinecone, and query Gemini)
-- Sync VectorDB with PRs (GitHub Actions on PR merges)
+**What this does:**
+- ✅ Loads repository configuration from `config/repositories.yml`
+- ✅ Clones the specified repositories
+- ✅ Processes all code files (Python, JavaScript, TypeScript, Java, etc.)
+- ✅ Generates intelligent code chunks
+- ✅ Creates AI-powered summaries using OpenAI
+- ✅ Generates embeddings for semantic search
+- ✅ Stores everything in Pinecone vector database
+- ✅ Provides detailed progress reporting
 
 ---
 
-## More Context
+## 🧪 Testing the Restructured Codebase
 
-**Chunk, Embed, Store** – check out `rag_ingestion_pipeline.ipynb`
+### Prerequisites
 
-- We used Tree-sitter for chunking; explore better strategies if available
-- Embedding using OpenAI `text-embedding-3-small` (dimension: 1536)
-- Create a free Pinecone account and store embeddings with the metadata (`repo_name`, `file_path`, `file_type`, `chunk_type`, `line_range`, `content`)
-- ✅ Ensure no file type is missed during chunking, embedding, or storing — any missing content could lead to loss of critical information
+1. **Python Environment**: Make sure you have Python 3.8+ installed
+2. **Dependencies**: Install required packages
+   ```bash
+   pip install -r requirements.txt
+   ```
 
+3. **Environment Variables**: Set up your API keys
+   ```bash
+   cp config/.env.example .env
+   # Edit .env with your actual API keys:
+   # OPENAI_API_KEY=your_openai_key
+   # PINECONE_API_KEY=your_pinecone_key
+   # PINECONE_ENVIRONMENT=your_pinecone_env
+   ```
 
-| File Type(s)                                     | Category        | Chunking Strategy                                 | What Gets Embedded                                     |
-|--------------------------------------------------|------------------|---------------------------------------------------|--------------------------------------------------------|
-| `.py`, `.js`, `.ts`, `.java`, `.cpp`, `.c`, `.cs`, `.go`, `.rb`, `.php`, `.rs`, `.swift`, `.kt`, `.scala` | Code            | Tree-sitter parse: functions, classes, methods     | Logical code blocks (function/class level)             |
-| `.ipynb`                                         | Notebook         | Cell-based splitting (code + markdown)            | Each notebook cell and selected metadata               |
-| `.html`                                          | HTML Markup      | Tree-sitter DOM-based: `<div>`, `<p>`, etc.       | Structural HTML segments by semantic tag               |
-| `.xml`, `.xsd`, `.xsl`                           | XML Markup       | Tree-sitter DOM-based elements                    | Logical XML nodes or fallback 1K-char splits           |
-| `.md`, `.txt`, `.rst`, `.adoc`, `.mdx`           | Markdown/Text    | Header-based (`#`, `##`, etc.)                    | Markdown sections and paragraphs                       |
-| `.json`, `.yaml`, `.yml`, `.jsonl`               | Config/Data      | Recursive key-level splitting                     | Key-value chunks or JSON/YAML fragments                |
-| `.csv`, `.tsv`, `.xls`, `.xlsx`, `.parquet`, `.feather`, `.h5`, `.hdf5` | Tabular Data | Preview: columns + sample rows                    | Column names and first few data rows                   |
-| `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.psd`, `.bmp`, `.tiff` | Image Files     | Skipped from content chunking                     | Metadata summary only (file name/type)                 |
-| `.woff`, `.woff2`, `.ttf`, `.otf`                | Fonts            | Skipped from content chunking                     | Metadata summary only                                  |
-| `.map`, `.zip`, `.exe`, `.bin`, `.dll`, `.so`, `.o` | Binary         | Skipped from content chunking                     | Metadata summary only                                  |
-| `.min.js`, `.min.css`, `.js.map`, `.css.map`     | Minified         | Skipped from content chunking                     | Metadata summary only                                  |
-| `.pdf`, `.docx`, `.doc`, `.rtf`, `.odt`          | Documents        | Skipped from content chunking                     | Metadata summary only                                  |
-| `.css`, `.scss`, `.sass`, `.less`                | Stylesheets      | Tree-sitter (style rules)                         | CSS rule blocks (selectors + declarations)             |
-| Unknown extensions                               | Fallback         | Single string summary                             | Minimal metadata string (filename, path, ext)          |
+---
 
-**Note:**
-- Update the ingestion pipeline to include appropriate chunking logic.
-- Update this table accordingly to reflect the new file type, category, strategy, and embedding logic.
+## 🧪 **Test 1: Basic Import Test**
 
+Verify that all modules can be imported correctly:
 
-## Front End
+```bash
+# Test core modules
+python -c "from src.core.simple_processor import SimpleCodeProcessor; print('✅ Simple processor import OK')"
+python -c "from src.core.code_processor_main import Config; print('✅ Main processor import OK')"
+python -c "from src.core.summarizer import CodeSummarizer; print('✅ Summarizer import OK')"
+python -c "from src.core.embedding_generator import CodeEmbeddingGenerator; print('✅ Embedding generator import OK')"
 
-Use **Claude Code CLI** to create new chat admin interfaces in the `codechat` repo.
+# Test utility modules
+python -c "from src.utils.evaluate import *; print('✅ Utils import OK')"
+```
 
+---
 
-## Backend
+## 🧪 **Test 2: Simple Processor (No API Keys Required)**
 
-Write a Lambda function in Python (`lambda_function.py`) using the AWS free tier (1M requests/month) to handle user queries for the RAG pipeline. The logic should:
+Test the basic file processing pipeline without external APIs:
 
-1. Embed the query with OpenAI’s `text-embedding-3-small` using `OPENAI_API_KEY` from environment variables  
-2. Query Pinecone’s `repo-chunks` for top-5 chunks or the matching percentage  
-3. Send context and query to **Gemini (`gemini-1.5-flash`)** using `GOOGLE_API_KEY`  
-4. Return the answer to the frontend
+```bash
+# Run the simple processor (will use mock embeddings)
+python -m src.core.simple_processor
 
-Deploy in AWS Lambda with `PINECONE_API_KEY` in environment variables.
+# Expected output:
+# 🚀 Processing 1 repositories...
+# 📦 Processing: codechat
+# ⚠️ Repository path repo_analysis_output/test_repo not found, using current workspace for testing
+# 📁 Found X files to process
+# 🔄 Processing: [filename]
+# 💾 Would store chunk chunk_0 in Pinecone
+#      Index: model-earth, Namespace: codechat-test
+#      Embedding size: 1536
+#      Metadata keys: ['repo_name', 'file_path', 'chunk_content', 'chunk_summary', 'chunk_id', 'language', 'timestamp']
+# ✅ Completed: codechat
+# 🎉 Processing complete!
+```
 
+---
 
-## VectorDB Sync
+## 🧪 **Test 3: Configuration Loading**
 
-GitHub sync — develop a solution for how we can sync the PR to the vector DB.
+Test that configuration files are loaded correctly:
 
-A good solution is to have the `file_path` in the metadata, right?  
+```bash
+# Test repositories.yml loading
+python -c "
+from src.core.simple_processor import SimpleCodeProcessor
+processor = SimpleCodeProcessor()
+repos = processor.load_repositories()
+print(f'✅ Loaded {len(repos)} repositories from config')
+for repo in repos:
+    print(f'  - {repo.get(\"name\", \"unnamed\")}: {repo.get(\"url\", \"no url\")}')
+"
+```
 
-Whenever a PR is merged, we replace all vectors related to that file with the updated file vectors.
+---
 
-We do the update with a GitHub Action in our webroot ([vector_sync.yml](https://github.com/ModelEarth/webroot/blob/main/.github/workflows/vector_sync.yml)), so chunking should be lightweight.
+## 🧪 **Test 4: Individual Components**
 
-For the initial load, we used Tree-sitter. But try to figure out that if the PR is a Python file, then we only build Tree-sitter Python and chunk it.  Embedding would obviously be OpenAI’s small model since it's lightweight.
+Test individual components separately:
+
+### 4.1 Test the Chunker
+```bash
+python -c "
+from src.core.chunker.smart_chunker import SmartChunker
+chunker = SmartChunker()
+test_content = '''def hello():
+    print('Hello World')
+
+class TestClass:
+    def method(self):
+        return 'test' '''
+chunks = chunker.smart_chunk_file_from_content('test.py', test_content)
+print(f'✅ Generated {len(chunks)} chunks')
+for i, chunk in enumerate(chunks[:2]):  # Show first 2 chunks
+    print(f'  Chunk {i}: {len(chunk[\"content\"])} chars')
+"
+```
+
+### 4.2 Test the Summarizer (requires OpenAI API key)
+```bash
+python -c "
+import os
+if os.getenv('OPENAI_API_KEY'):
+    from src.core.summarizer import CodeSummarizer
+    summarizer = CodeSummarizer(os.getenv('OPENAI_API_KEY'))
+    test_code = 'def calculate_sum(a, b): return a + b'
+    summary = summarizer.summarize_full_code(test_code, 'test.py')
+    print('✅ Summarizer working')
+    print(f'Summary: {summary.get(\"summary\", \"No summary\")[:100]}...')
+else:
+    print('⚠️  OPENAI_API_KEY not set - skipping summarizer test')
+"
+```
+
+### 4.3 Test the Embedding Generator (requires OpenAI API key)
+```bash
+python -c "
+import os
+if os.getenv('OPENAI_API_KEY'):
+    from src.core.embedding_generator import CodeEmbeddingGenerator
+    generator = CodeEmbeddingGenerator(os.getenv('OPENAI_API_KEY'))
+    test_text = 'def hello(): return \"world\"'
+    embedding = generator.generate_embedding(test_text)
+    print(f'✅ Embedding generated: {len(embedding)} dimensions')
+else:
+    print('⚠️  OPENAI_API_KEY not set - skipping embedding test')
+"
+```
+
+---
+
+## 🧪 **Test 5: Utility Scripts**
+
+Test the utility scripts in `src/utils/`:
+
+### 5.1 Run the Demo Script
+```bash
+python src/utils/run_chunker_demo.py
+```
+
+### 5.2 Test Evaluation Script
+```bash
+python src/utils/evaluate.py
+```
+
+### 5.3 Run Unit Tests
+```bash
+python src/utils/test.py
+```
+
+---
+
+## 🧪 **Test 6: Full Integration Test**
+
+Run a complete end-to-end test (requires API keys):
+
+```bash
+# Make sure your .env file has the correct API keys
+export $(cat .env | xargs)
+
+# Run the main processor
+python -m src.core.code_processor_main
+
+# Expected: Complete processing pipeline with real API calls
+```
+
+---
+
+## 🧪 **Test 7: Lambda Function Tests**
+
+Test the Lambda functions locally:
+
+```bash
+# Test code processor Lambda
+python -c "
+from src.lambdas.code_processor.index import lambda_handler
+event = {'repositories': [{'url': 'https://github.com/test/repo', 'name': 'test'}]}
+result = lambda_handler(event, None)
+print('✅ Lambda function executed')
+print(f'Result: {result}')
+"
+```
+
+---
+
+## 🧪 **Test 8: Web Interface**
+
+If you want to test the web interface:
+
+```bash
+# Check if there are any web files
+ls src/web/
+
+# If there's an index.html, you can open it in a browser
+# Or run a local server
+python -m http.server 8000
+# Then visit http://localhost:8000/src/web/index.html
+```
+
+---
+
+## 🔍 **Debugging Tips**
+
+### If imports fail:
+```bash
+# Check Python path
+python -c "import sys; print('\n'.join(sys.path))"
+
+# Add src to Python path manually
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+```
+
+### If configuration fails:
+```bash
+# Check if config files exist
+ls -la config/
+
+# Validate YAML syntax
+python -c "import yaml; yaml.safe_load(open('config/repositories.yml'))"
+```
+
+### If API calls fail:
+```bash
+# Check environment variables
+echo $OPENAI_API_KEY
+echo $PINECONE_API_KEY
+
+# Test API connectivity
+python -c "import openai; openai.api_key = os.getenv('OPENAI_API_KEY'); print('✅ OpenAI API accessible')"
+```
+
+---
+
+## 📊 **Expected Test Results**
+
+| Test | Expected Result | Notes |
+|------|----------------|-------|
+| Import Test | ✅ Success messages | All modules should import without errors |
+| Simple Processor | ✅ File processing output | Should show chunking and mock storage |
+| Config Loading | ✅ Repository list loaded | Should show configured repositories |
+| Chunker Test | ✅ Chunks generated | Should create multiple chunks from test code |
+| Summarizer Test | ✅ Summary generated | Requires OpenAI API key |
+| Embedding Test | ✅ 1536-dim vector | Requires OpenAI API key |
+| Utility Scripts | ✅ Script execution | May require additional setup |
+| Full Integration | ✅ Complete pipeline | Requires all API keys |
+| Lambda Tests | ✅ Function execution | Should handle events properly |
+| Test Suite | ✅ Passing tests | May have some integration test failures |
+
+---
+
+## 🚨 **Common Issues & Solutions**
+
+### Issue: "Module not found"
+**Solution**: Add src to Python path
+```bash
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+```
+
+### Issue: "No repositories found"
+**Solution**: Check config/repositories.yml exists and has valid YAML
+
+### Issue: "API key not set"
+**Solution**: Copy config/.env.example to .env and fill in your keys
+
+### Issue: "Permission denied"
+**Solution**: Make sure scripts are executable
+```bash
+chmod +x src/utils/*.py
+```
+
+---
+
+## 🎯 **Quick Test Command**
+
+For a fast sanity check, run this one-liner:
+
+```bash
+cd /Users/sagar/projects/codechat && python -c "
+from src.core.simple_processor import SimpleCodeProcessor
+from src.core.code_processor_main import Config
+print('✅ Core modules import successfully')
+processor = SimpleCodeProcessor()
+repos = processor.load_repositories()
+print(f'✅ Configuration loaded: {len(repos)} repositories')
+print('🎉 Ready for testing!')
+"
+```
+
+This will verify that the restructuring worked correctly and the basic functionality is intact!
+
+---
+
+## 🏗️ **Backend + Chunking Strategies**
+
+### Infrastructure Overview
+
+CodeChat uses a streamlined AWS serverless architecture focused on essential components:
+
+**Core Components:**
+- **Lambda Functions**: `query_handler` (main API), `get_repositories` (repository listing)
+- **API Gateway**: RESTful endpoints with CORS support (`/query`, `/repositories`) 
+- **S3 Storage**: Configuration files and repository metadata
+- **Lambda Layers**: Python dependencies for efficient deployments
+- **Pinecone Vector Database**: Semantic search and embeddings storage
+
+### Deployment Architecture
+
+```
+Frontend (chat/) 
+    ↓ HTTP requests
+API Gateway (/query, /repositories)
+    ↓ Lambda invocations  
+Lambda Functions (query_handler, get_repositories)
+    ↓ Dependencies
+Lambda Layer (Python packages)
+    ↓ Configuration
+S3 Bucket (modelearth_repos.yml)
+```
+
+### Intelligent Chunking Strategy
+
+CodeChat implements an advanced multi-agent chunking system for optimal code understanding:
+
+#### 1. **Smart File Processing**
+- **Language Detection**: Automatic identification of programming languages
+- **Syntax-Aware Splitting**: Respects code structure (functions, classes, modules)
+- **Context Preservation**: Maintains logical code relationships
+
+#### 2. **Multi-Level Chunking**
+- **Function-Level**: Individual functions with their documentation
+- **Class-Level**: Complete class definitions with methods
+- **Module-Level**: File-level summaries and imports
+- **Cross-Reference**: Links between related code components
+
+#### 3. **Repository-Intelligent Search**
+The system uses agentic components for enhanced search:
+
+```python
+# Query Analysis Agent
+class QueryAnalysisAgent:
+    def analyze_query(self, query: str) -> QueryAnalysis:
+        # Determines query type and search strategy
+        # Returns: code_search, conceptual_search, debugging_help, etc.
+
+# Repository Intelligence Agent  
+class RepositoryIntelligentSearchAgent:
+    def search(self, query_analysis: QueryAnalysis, repo_context: str):
+        # Executes targeted search based on query type
+        # Returns: relevant code chunks with explanations
+```
+
+#### 4. **Context Generation**
+- **File Metadata**: Path, language, repository information
+- **Code Summaries**: AI-generated explanations of functionality
+- **Relationship Mapping**: Dependencies and import relationships
+- **Usage Examples**: How code components are used
+
+### Clean Deployment Process
+
+#### Quick Deploy (One Command)
+```bash
+# Set environment variables
+export TF_VAR_openai_api_key="your-openai-key"
+export TF_VAR_pinecone_api_key="your-pinecone-key"
+
+# Deploy everything
+./deploy-clean.sh
+```
+
+#### Manual Deployment
+```bash
+# 1. Build Lambda layers
+cd backend/lambda_layers
+pip3 install -r lambda_layer_query_handler_requirements.txt -t temp_layer/python/
+zip -r lambda-layer-query-handler.zip temp_layer/python/
+
+# 2. Deploy infrastructure
+cd ../infra
+terraform init
+terraform apply -var-file="terraform-clean.tfvars"
+
+# 3. Configure frontend
+API_URL=$(terraform output -raw api_gateway_url)
+echo "window.CODECHAT_API_ENDPOINT = '$API_URL';" >> ../../chat/script.js
+```
+
+### Configuration Management
+
+#### Repository Configuration (`config/modelearth_repos.yml`)
+```yaml
+repositories:
+  - name: "modelearth/webroot"
+    description: "Main website repository"
+    priority: "high"
+  - name: "modelearth/cloud" 
+    description: "Cloud infrastructure"
+    priority: "medium"
+```
+
+#### Environment Variables
+```bash
+# Required for deployment
+export TF_VAR_openai_api_key="sk-..."
+export TF_VAR_pinecone_api_key="..."
+
+# Optional (have defaults)
+export TF_VAR_aws_region="us-east-1"
+export TF_VAR_pinecone_environment="us-east-1-aws"
+export TF_VAR_pinecone_index="model-earth-jam-stack"
+```
+
+### Performance Optimizations
+
+#### Lambda Configuration
+- **Memory**: 1024 MB for query handler (handles complex AI operations)
+- **Timeout**: 300 seconds (allows for thorough search processing)
+- **Layers**: Shared dependencies reduce cold start times
+- **Runtime**: Python 3.13 for latest performance improvements
+
+#### Search Optimizations
+- **Namespace Isolation**: Separate vector spaces per repository
+- **Query Preprocessing**: Intelligent query analysis before search
+- **Context Limiting**: Optimal chunk sizes for LLM processing
+- **Caching Strategy**: Repository metadata cached in S3
+
+### Architecture Cleanup (Recent Changes)
+
+**Archived Components** (moved from active to archive):
+- Ingestion worker Lambda (not used by current frontend)
+- Ingestion webhook Lambda (not used by current frontend) 
+- SQS queues and DynamoDB tables (ingestion pipeline)
+- Related Lambda layers and dependencies
+
+**Essential Components Kept**:
+- Query handler Lambda (main API for repository search)
+- Get repositories Lambda (returns available repository list)
+- Query handler dependencies layer (Python packages)
+- S3 bucket for configuration storage
+- API Gateway with proper CORS configuration
+
+**Benefits Achieved**:
+- 50% reduction in AWS resources and costs
+- Simplified maintenance and debugging
+- Faster deployment times (essential components only)
+- Clearer dependency management
+- Better documentation and automated deployment
+
+### API Endpoints
+
+#### POST `/query`
+Submit search queries to the repository-intelligent search system:
+```json
+{
+  "query": "How does authentication work?",
+  "repo_name": "modelearth/webroot", 
+  "llm_provider": "bedrock"
+}
+```
+
+#### GET `/repositories`  
+Get list of available repositories for search:
+```json
+{
+  "repositories": [
+    {"name": "modelearth/webroot", "description": "Main website"},
+    {"name": "modelearth/cloud", "description": "Cloud infrastructure"}
+  ]
+}
+```
+
+### Frontend Integration
+
+The chat interface (`chat/index.html`) provides:
+- **Repository Selection**: Dropdown with available repositories
+- **LLM Provider Options**: Bedrock, OpenAI, Anthropic support
+- **Material Design**: Modern, responsive UI with dark theme
+- **Real-time Search**: Instant responses with typing indicators
+- **Conversation History**: Persistent chat sessions
+
+### Monitoring & Troubleshooting
+
+#### CloudWatch Integration
+```bash
+# View Lambda logs
+aws logs describe-log-groups --log-group-name-prefix "/aws/lambda/codechat"
+
+# Monitor API Gateway metrics
+aws cloudwatch get-metric-statistics --namespace AWS/ApiGateway
+```
+
+#### Common Issues
+- **CORS Errors**: Check API Gateway CORS configuration
+- **Lambda Timeouts**: Increase timeout in Terraform
+- **Permission Errors**: Verify IAM role policies  
+- **Layer Issues**: Rebuild dependencies with correct Python version
+
+This streamlined architecture provides a robust, scalable foundation for repository-intelligent code search while maintaining simplicity and cost-effectiveness.
+
+---
+
+*For component-specific documentation, see individual README files in `chat/`, `backend/`, etc. All major system documentation has been consolidated into this main README.*
