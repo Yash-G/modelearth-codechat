@@ -37,3 +37,11 @@ archive/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# IDE/editor settings
+.idea/
+.vscode/
+
+# Python bytecode caches
+__pycache__/
+**/__pycache__/
