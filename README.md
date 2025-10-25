@@ -421,6 +421,16 @@ API_URL=$(terraform output -raw api_gateway_url)
 echo "window.CODECHAT_API_ENDPOINT = '$API_URL';" >> ../../chat/script.js
 ```
 
+
+#### Local Backend (Dev Server)
+```bash
+conda run -n model-earth-codechat python scripts/dev_server.py --mock
+```
+
+- Default binds to http://127.0.0.1:8080; update the chat UI endpoint to this value while testing.
+- Omit --mock to invoke real services when your OpenAI/Pinecone keys are present in the environment or .env file.
+
+
 ### Configuration Management
 
 #### Repository Configuration (`config/modelearth_repos.yml`)
