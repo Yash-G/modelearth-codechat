@@ -401,20 +401,19 @@ export TF_VAR_openai_api_key="your-openai-key"
 export TF_VAR_pinecone_api_key="your-pinecone-key"
 
 # Deploy everything
-./deploy-clean.sh
+python scripts/deploy_clean.py --auto-approve
 ```
 
 #### Manual Deployment
 ```bash
-# 1. Build Lambda layers
+# 1. Build Lambda layers (creates lambda-layer-query-handler.zip)
 cd backend/lambda_layers
-pip3 install -r lambda_layer_query_handler_requirements.txt -t temp_layer/python/
-zip -r lambda-layer-query-handler.zip temp_layer/python/
+python build_layers.py
 
 # 2. Deploy infrastructure
 cd ../infra
 terraform init
-terraform apply -var-file="terraform-clean.tfvars"
+terraform apply
 
 # 3. Configure frontend
 API_URL=$(terraform output -raw api_gateway_url)
