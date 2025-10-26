@@ -1,6 +1,11 @@
 ﻿class ChatAssistant {
     constructor() {
-        this.apiEndpoint = window.CODECHAT_API_ENDPOINT || localStorage.getItem('chatApiEndpoint') || '';
+        const searchParams = new URLSearchParams(window.location.search);
+        const queryOverride = searchParams.get('api');
+        const storedOverride = localStorage.getItem('chatApiEndpoint');
+        const immediateOverride = window.CODECHAT_API_ENDPOINT || queryOverride || storedOverride || '';
+
+        this.apiEndpoint = this.resolveApiEndpoint(immediateOverride);
         this.conversations = JSON.parse(localStorage.getItem('chatConversations') || '[]');
         this.currentConversationId = null;
         this.availableRepositories = [];
@@ -26,6 +31,50 @@
         this.bindEvents();
         this.loadConversations();
         this.loadAvailableRepositories();
+    }
+
+    resolveApiEndpoint(override) {
+        const normalizedOverride = this.normalizeEndpoint(override);
+        if (normalizedOverride) {
+            return normalizedOverride;
+        }
+        return this.getDefaultApiEndpoint();
+    }
+
+    getDefaultApiEndpoint() {
+        const localHosts = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
+        if (localHosts.has(window.location.hostname) || window.location.protocol === 'file:') {
+            return 'http://127.0.0.1:8080';
+        }
+        const origin = window.location.origin.replace(/\/$/, '');
+        return this.normalizeEndpoint(`${origin}/codechat/api`);
+    }
+
+    normalizeEndpoint(value) {
+        if (!value || typeof value !== 'string') {
+            return '';
+        }
+        const trimmed = value.trim();
+        if (!trimmed) {
+            return '';
+        }
+        // Only accept absolute http(s) URLs as explicit overrides
+        if (!/^https?:\/\//i.test(trimmed)) {
+            return '';
+        }
+        try {
+            const url = new URL(trimmed);
+            const pathname = url.pathname.replace(/\/+$/, '');
+            return `${url.origin}${pathname}`;
+        } catch (error) {
+            return '';
+        }
+    }
+
+    buildApiUrl(path) {
+        const base = (this.apiEndpoint || '').replace(/\/+$/, '');
+        const suffix = `/${(path || '').toString().replace(/^\/+/, '')}`;
+        return `${base}${suffix}`;
     }
 
     initializeWelcomeScreen() {
@@ -267,7 +316,7 @@
         const selectedRepo = this.repoSelect.value;
         
         if (!this.apiEndpoint) {
-            this.showError('API endpoint is not configured. Please update CODECHAT_API_ENDPOINT and try again.');
+            this.showError('API endpoint is not configured. Set CODECHAT_API_ENDPOINT or call setCodeChatApiEndpoint().');
             return;
         }
 
@@ -311,7 +360,7 @@
                 requestPayload.llm_provider = this.llmSelect.value;
             }
 
-            const response = await fetch(`${this.apiEndpoint}/query`, {
+            const response = await fetch(this.buildApiUrl('/query'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestPayload)
@@ -661,13 +710,13 @@
                 this.setFallbackRepositories();
                 this.populateRepositorySelect();
             }
-            this.showError('API endpoint is not configured. Set CODECHAT_API_ENDPOINT to enable repository loading.');
+            this.showError('API endpoint is not configured. Set CODECHAT_API_ENDPOINT or call setCodeChatApiEndpoint().');
             this.repoSelect.disabled = false;
             return;
         }
 
         try {
-            const response = await fetch(`${this.apiEndpoint}/repositories`, {
+            const response = await fetch(this.buildApiUrl('/repositories'), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -880,7 +929,27 @@ document.addEventListener('DOMContentLoaded', () => {
             sanitize: false
         });
     }
-    
+
     chatAssistant = new ChatAssistant();
 });
+
+window.setCodeChatApiEndpoint = function setCodeChatApiEndpoint(url) {
+    const rawValue = typeof url === 'string' ? url.trim() : '';
+    const normalizedValue = chatAssistant ? chatAssistant.normalizeEndpoint(rawValue) : rawValue;
+
+    if (normalizedValue) {
+        localStorage.setItem('chatApiEndpoint', normalizedValue);
+    } else {
+        localStorage.removeItem('chatApiEndpoint');
+    }
+
+    if (chatAssistant) {
+        chatAssistant.apiEndpoint = chatAssistant.resolveApiEndpoint(normalizedValue);
+        chatAssistant.loadAvailableRepositories();
+    }
+};
+
+window.clearCodeChatApiEndpoint = function clearCodeChatApiEndpoint() {
+    window.setCodeChatApiEndpoint('');
+};
 
