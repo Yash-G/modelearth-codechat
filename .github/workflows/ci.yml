@@ -20,8 +20,25 @@ jobs:
     # Python setup and full dependency install are unnecessary for Terraform-only deploys
     # Remove the heavy pip install to avoid resolver issues and speed up CI
 
+    - name: Compute deploy guard (upstream main with AWS keys)
+      id: deploy_guard
+      shell: bash
+      env:
+        REPO: ${{ github.repository }}
+        REF: ${{ github.ref }}
+        EVENT: ${{ github.event_name }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        can_deploy=false
+        if [[ "$REPO" == "ModelEarth/codechat" && "$EVENT" == "push" && "$REF" == "refs/heads/main" \
+              && -n "$AWS_ACCESS_KEY_ID" && -n "$AWS_SECRET_ACCESS_KEY" ]]; then
+          can_deploy=true
+        fi
+        echo "deploy=$can_deploy" >> "$GITHUB_OUTPUT"
+
     - name: Configure AWS Credentials (deploy only)
-      if: ${{ github.repository == 'ModelEarth/codechat' && github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY }}
+      if: ${{ steps.deploy_guard.outputs.deploy == 'true' }}
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -44,14 +61,14 @@ jobs:
       working-directory: ./backend/infra
 
     - name: Terraform Plan (deploy only)
-      if: ${{ github.repository == 'ModelEarth/codechat' && github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY }}
+      if: ${{ steps.deploy_guard.outputs.deploy == 'true' }}
       id: plan
       run: terraform plan -no-color
       working-directory: ./backend/infra
       continue-on-error: true
 
     - name: Terraform Apply (deploy only)
-      if: ${{ github.repository == 'ModelEarth/codechat' && github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY }}
+      if: ${{ steps.deploy_guard.outputs.deploy == 'true' }}
       run: terraform apply -auto-approve -input=false
       working-directory: ./backend/infra
       env:
