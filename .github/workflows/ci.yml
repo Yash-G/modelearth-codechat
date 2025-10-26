@@ -21,10 +21,11 @@ jobs:
     # Remove the heavy pip install to avoid resolver issues and speed up CI
 
     - name: Build Lambda layer artifact
+      working-directory: backend/lambda_layers
       shell: bash
       run: |
-        chmod +x backend/lambda_layers/build_layers.sh
-        PY_CMD=python3 backend/lambda_layers/build_layers.sh
+        chmod +x build_layers.sh
+        PY_CMD=python3 ./build_layers.sh
 
     - name: Compute deploy guard (upstream main with AWS keys)
       id: deploy_guard
