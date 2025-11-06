@@ -342,6 +342,54 @@ def safe_upsert_batch(batch: List[dict], repo_name: str) -> int:
     return len(batch)
 
 
+def detect_github_commit_range() -> Tuple[str, str]:
+    """
+    Auto-detect commit range from GitHub Actions environment.
+    Returns (from_commit, to_commit) tuple.
+    Raises RuntimeError if not in GitHub Actions or if detection fails.
+    """
+    event_path = os.environ.get("GITHUB_EVENT_PATH")
+    event_name = os.environ.get("GITHUB_EVENT_NAME")
+    github_sha = os.environ.get("GITHUB_SHA")
+
+    if not event_path:
+        raise RuntimeError("GITHUB_EVENT_PATH not set. Cannot auto-detect commit range. "
+                          "Provide --from-commit or run in GitHub Actions environment.")
+
+    if not os.path.exists(event_path):
+        raise RuntimeError(f"GitHub event file not found: {event_path}")
+
+    try:
+        with open(event_path, 'r', encoding='utf-8') as f:
+            event = json.load(f)
+    except Exception as e:
+        raise RuntimeError(f"Failed to parse GitHub event file: {e}")
+
+    if event_name == "push":
+        base = event.get("before", "")
+        head = github_sha or event.get("after", "")
+    elif event_name == "pull_request":
+        pr = event.get("pull_request", {})
+        base = pr.get("base", {}).get("sha", "")
+        head = pr.get("merge_commit_sha") or github_sha or ""
+    else:
+        raise RuntimeError(f"Unsupported GitHub event type: {event_name}. "
+                          "Only 'push' and 'pull_request' events are supported. "
+                          "Use --from-commit for manual runs.")
+
+    # Handle empty tree / first commit
+    if not base or base == "0000000000000000000000000000000000000000":
+        if head:
+            base = f"{head}^"
+        else:
+            raise RuntimeError("Cannot determine base commit: both base and head are missing from event data")
+
+    if not head:
+        raise RuntimeError("Cannot determine head commit: missing from GitHub event data")
+
+    return (base, head)
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="VectorDB sync")
     parser.add_argument("changed_files", nargs="?", help="Path to changed_files.txt from git diff --name-status")
@@ -357,6 +405,8 @@ def parse_args():
     parser.add_argument("--to-commit", dest="to_commit", default="HEAD", help="End commit/ref for diff (default: HEAD)")
     parser.add_argument("--repo-root", dest="repo_root", default=".",
                         help="Path to the git superproject root (default: current dir)")
+    parser.add_argument("--skip-on-missing-keys", action="store_true",
+                        help="Exit gracefully (code 0) if API keys are missing instead of raising an error")
     return parser.parse_args()
 
 
@@ -455,6 +505,21 @@ def compute_changes_from_git(repo_root: str, from_rev: str, to_rev: str) -> List
 
 def main_entry():
     args = parse_args()
+
+    # Validate required API keys
+    missing_keys = []
+    if not os.environ.get("PINECONE_API_KEY"):
+        missing_keys.append("PINECONE_API_KEY")
+    if not os.environ.get("OPENAI_API_KEY"):
+        missing_keys.append("OPENAI_API_KEY")
+
+    if missing_keys:
+        if args.skip_on_missing_keys:
+            print(f"[skip] Missing required API keys: {', '.join(missing_keys)}; skipping VectorDB sync.")
+            sys.exit(0)
+        else:
+            raise RuntimeError(f"Missing required API keys: {', '.join(missing_keys)}")
+
     errors_out = args.errors_out
     files_to_process: List[Tuple[str, str]] = []
 
@@ -487,8 +552,16 @@ def main_entry():
         else:
             raise RuntimeError(f"Errors file not found: {args.retry_errors}")
     else:
-        if args.from_commit:
-            changes = compute_changes_from_git(args.repo_root, args.from_commit, args.to_commit or "HEAD")
+        from_commit = args.from_commit
+        to_commit = args.to_commit or "HEAD"
+
+        # Auto-detect commit range from GitHub Actions if not explicitly provided
+        if not from_commit and not args.changed_files:
+            from_commit, to_commit = detect_github_commit_range()
+            print(f"[info] Auto-detected commit range from GitHub Actions: {from_commit}..{to_commit}")
+
+        if from_commit:
+            changes = compute_changes_from_git(args.repo_root, from_commit, to_commit)
             for st, fp in changes:
                 if st.startswith('R'):
                     continue
