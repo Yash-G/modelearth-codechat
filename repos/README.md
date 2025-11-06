@@ -1,6 +1,6 @@
 # ModelEarth Repositories
 
-This list is extracted from the prior README used with the webroot. It groups primary webroot submodules and data-pipeline output repos.
+Our primary webroot submodules and data-pipeline output repos.
 
 ## Webroot
 
