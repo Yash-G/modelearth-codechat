@@ -1,6 +1,6 @@
 # CodeChat - Repository-Intelligent Code Search
 
-> **Note**: This README contains all essential documentation. Previous documentation files have been consolidated here. Component-specific READMEs remain in their respective directories (`chat/README.md`, etc.). Archived components and old docs are in the `archive/` directory.
+> **Note**: This README contains all essential documentation. Previous documentation files have been consolidated here. Component-specific READMEs remain in their respective directories (`chat/README.md`, etc.). Archived components and old docs are in the `archive/` directory. View list of [modelearth repos](repos) used for Pinecoce vector training.
 
 ## 🚀 **Quick Start - Run the Main Pipeline**
 
